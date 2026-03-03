@@ -1,0 +1,93 @@
+"use client"
+
+import { motion } from "framer-motion"
+import { Send } from "lucide-react"
+import { SectionHeading } from "./section-heading"
+
+export function Contact() {
+  return (
+    <section id="contact" className="relative py-32">
+      {/* Glow */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,_oklch(0.5_0.15_250_/_0.06)_0%,_transparent_70%)]" />
+
+      <div className="relative mx-auto max-w-[1400px] px-6">
+        <SectionHeading
+          tag="// contact"
+          title="Get In Touch"
+          description="Have a project in mind or want to collaborate? Send me a message."
+        />
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mx-auto max-w-xl"
+        >
+          <div className="gradient-border rounded-2xl bg-card/50 p-8 md:p-10">
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="flex flex-col gap-5"
+            >
+              <div>
+                <label
+                  htmlFor="name"
+                  className="mb-2 block text-sm font-medium text-foreground"
+                >
+                  Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Your name"
+                  className="w-full rounded-lg border border-border/60 bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="email"
+                  className="mb-2 block text-sm font-medium text-foreground"
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="your@email.com"
+                  className="w-full rounded-lg border border-border/60 bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="message"
+                  className="mb-2 block text-sm font-medium text-foreground"
+                >
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  rows={5}
+                  placeholder="Tell me about your project..."
+                  className="w-full resize-none rounded-lg border border-border/60 bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-all hover:opacity-90 hover:shadow-lg hover:shadow-accent/20"
+              >
+                Send Message
+                <Send
+                  size={16}
+                  className="transition-transform group-hover:translate-x-0.5"
+                />
+              </button>
+            </form>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
