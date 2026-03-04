@@ -17,9 +17,9 @@ export function SectionHeading({ tag, title, description }: SectionHeadingProps)
       transition={{ duration: 0.6 }}
       className="mb-16 text-center"
     >
-      <span className="mb-4 inline-block rounded-full border border-border/60 bg-secondary/50 px-4 py-1 font-mono text-xs text-accent">
+      {/* <span className="mb-4 inline-block rounded-full border border-border/60 bg-secondary/50 px-4 py-1 font-mono text-xs text-accent">
         {tag}
-      </span>
+      </span> */}
       <h2 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl">
         {title}
       </h2>

@@ -1,6 +1,7 @@
 "use client"
 
 import { Github, Linkedin, Mail } from "lucide-react"
+import LaserFlow from "./laser-flow"
 
 const socials = [
   { icon: Github, href: "https://github.com", label: "GitHub" },
@@ -32,6 +33,23 @@ export function Footer() {
           ))}
         </div>
       </div>
+         <div className="absolute inset-0 z-0">
+              <LaserFlow
+                color="#7abaff"
+                wispDensity={0.9}
+                flowSpeed={0.1}
+                verticalSizing={2}
+                horizontalSizing={1}
+                fogIntensity={0.45}
+                fogScale={0.1}
+                wispSpeed={15}
+                wispIntensity={5.7}
+                flowStrength={0.15}
+                decay={6}
+                horizontalBeamOffset={-0.3}
+                verticalBeamOffset={-0.5}
+              />
+            </div>
     </footer>
   )
 }

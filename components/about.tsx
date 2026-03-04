@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { Code2, Database, Globe, Zap } from "lucide-react"
 import { SectionHeading } from "./section-heading"
+import ProfileCard from "./ProfileCard"
 
 const highlights = [
   {
@@ -40,8 +41,35 @@ export function About() {
           title="About Me"
         />
 
-        <div className="grid items-start gap-16 lg:grid-cols-2">
-          {/* Text */}
+        {/* 3 columnas: ProfileCard | Texto+Stats | Highlights */}
+        <div className="grid items-start gap-10 lg:grid-cols-3">
+
+          {/* ── Col 1 — ProfileCard (nuevo) ── */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6 }}
+          >
+            <ProfileCard
+  name="Javi A. Torres"
+  title="Software Engineer"
+  handle="javicodes"
+  status="Online"
+  contactText="Contact Me"
+  avatarUrl="/resources/vivero.png"
+  showUserInfo={false}
+  enableTilt={true}
+  enableMobileTilt={true}
+  onContactClick={() => console.log('Contact clicked')}
+  behindGlowColor="rgba(125, 190, 255, 0.67)"
+  iconUrl="/assets/demo/iconpattern.png"
+  behindGlowEnabled
+  innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
+/>
+          </motion.div>
+
+          {/* ── Col 2 — Texto + Stats (sin cambios) ── */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -87,7 +115,7 @@ export function About() {
             </div>
           </motion.div>
 
-          {/* Cards */}
+          {/* ── Col 3 — Highlights cards (sin cambios) ── */}
           <div className="grid gap-4 sm:grid-cols-2">
             {highlights.map((item, index) => {
               const Icon = item.icon
@@ -114,6 +142,7 @@ export function About() {
               )
             })}
           </div>
+
         </div>
       </div>
     </section>

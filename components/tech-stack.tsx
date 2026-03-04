@@ -121,7 +121,7 @@ export function TechStack() {
       </div>
 
       {/* GradualBlur at bottom of section */}
-      <GradualBlur
+     {/*  <GradualBlur
         target="parent"
         position="bottom"
         height="7rem"
@@ -130,7 +130,7 @@ export function TechStack() {
         curve="bezier"
         exponential
         opacity={1}
-      />
+      /> */}
     </section>
   )
 }
