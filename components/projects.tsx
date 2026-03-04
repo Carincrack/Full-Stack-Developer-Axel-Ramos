@@ -231,7 +231,7 @@ function ProjectCard({
         </motion.div>
       </div>
 
-      {/* Título al fondo en hover — absolute, no afecta layout */}
+      {/* Título al fondo en hover */}
       <motion.h3
         className="absolute bottom-8 left-8 right-8 z-20 text-xl font-bold text-white drop-shadow-lg"
         animate={isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
@@ -245,12 +245,12 @@ function ProjectCard({
 
 export function Projects() {
   return (
-    <section id="projects" className="relative py-32 overflow-hidden">
+    // ✅ SIN overflow-hidden — eso cortaba el LightRays al agregar más proyectos
+    <section id="projects" className="relative py-32">
 
-      {/* LightRays — solo decorativo en la parte superior */}
+      {/* LightRays — inset-0 para cubrir toda la sección sin cortes */}
       <motion.div
-        className="pointer-events-none absolute top-0 left-0 right-0 z-[2]"
-        style={{ height: "600px" }}
+        className="pointer-events-none absolute inset-0 z-[2]"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: false, amount: 0.1 }}
@@ -267,16 +267,15 @@ export function Projects() {
           noiseAmount={0}
           distortion={0}
           pulsating={false}
-          fadeDistance={1}
+          fadeDistance={0.6}
           saturation={1.5}
         />
       </motion.div>
 
-      {/* Fade top — tapa el borde superior de los rayos */}
+      {/* Fade top */}
       <div className="pointer-events-none absolute top-0 left-0 right-0 z-[3] h-24 bg-gradient-to-b from-background to-transparent" />
 
-      {/* Fade bottom — tapa el borde inferior de los rayos cuando hay pocos proyectos
-          y evita la línea negra al añadir más cards */}
+      {/* Fade bottom */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[3] h-32 bg-gradient-to-t from-background to-transparent" />
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-6">
