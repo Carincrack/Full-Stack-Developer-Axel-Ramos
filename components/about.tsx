@@ -46,7 +46,7 @@ export function About() {
           Tablet:  ProfileCard arriba centrado + texto/highlights abajo en 2col
           Desktop: 3 columnas iguales
         */}
-        <div className="grid items-start gap-8 lg:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid items-start gap-8 lg:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 z-50">
 
           {/* ── Col 1 — ProfileCard ── */}
           {/* En mobile/tablet: centrado y ancho controlado */}
@@ -61,14 +61,14 @@ export function About() {
             <ProfileCard
               name="Axel R.V"
               title="Systems Engineer"
-              avatarUrl="https://avatars.githubusercontent.com/u/12345678?v=4"
+              /* avatarUrl="" */
               showUserInfo={false}
               enableTilt={true}
               enableMobileTilt={false}
             
               behindGlowColor="rgba(125, 190, 255, 0.67)"
-              iconUrl="https://cdn-icons-png.flaticon.com/512/5968/5968705.png"
-              behindGlowEnabled
+              iconUrl="/resources/iconpattern.png"
+              behindGlowEnabled={true}
               innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
             />
           </motion.div>
