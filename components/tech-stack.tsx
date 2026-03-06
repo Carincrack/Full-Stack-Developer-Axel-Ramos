@@ -22,6 +22,7 @@ const techStack: TechItem[] = [
   { name: "HTML", category: "Frontend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" },
   { name: "CSS", category: "Frontend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" },
   { name: "Vite", category: "Frontend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg" },
+  { name: "Figma", category: "Frontend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" },
   // Backend
   { name: "Node.js", category: "Backend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
   { name: "NestJS", category: "Backend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nestjs/nestjs-original.svg" },
@@ -39,6 +40,7 @@ const techStack: TechItem[] = [
   { name: "GitHub", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" },
   { name: "Azure DevOps", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg" },
   { name: "Vercel", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" },
+  {name: "Railway", category: "DevOps", icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAOVBMVEUAAAA7OzuXl5e+vr7S0tJ2dnbo6Oj///8LCwvb29v6+voyMjJOTk5sbGygoKCurq6EhITCwsLIyMg/5z2vAAAADHRSTlP//////////////v5RwSCUAAAAq0lEQVR4Aa3SBQKEIAAEwKWbi///1aK5jrFdpfEPhDLOGSW4JaTKpJgibdTG7vvGaHScrVG6uu6/nKka2/Zvra7lBoUvgoilcoHkVEUa4FI5Mv83Fhogj18JBj7Vd8ZRK8Uu8syoRDi1YdidY0EzXLaQp9LCRCDWkF4mEbIWq8nE89YgYvjkuuEE6de7kJzVHWdk5jYzw5TZcZsmu2fdvEzqUlDm/QU2Lc3frU1iDemt76AZAAAAAElFTkSuQmCC" },
 ]
 
 const categories = [
@@ -50,7 +52,7 @@ const categories = [
 
 function TechIconGrid({ items }: { items: TechItem[] }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 text-nowrap" >
       {items.map((tech) => (
         <motion.div
           key={tech.name}
@@ -67,7 +69,7 @@ function TechIconGrid({ items }: { items: TechItem[] }) {
             className="h-[18px] w-[18px] shrink-0"
             loading="lazy"
           />
-          <span className="text-xs font-medium text-muted-foreground transition-colors group-hover:text-foreground">
+          <span className="text-xs font-medium text-muted-foreground transition-colors group-hover:text-foreground select-none">
             {tech.name}
           </span>
         </motion.div>

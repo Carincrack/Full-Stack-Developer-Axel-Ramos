@@ -67,7 +67,7 @@ export function About() {
               enableMobileTilt={false}
             
               behindGlowColor="rgba(125, 190, 255, 0.67)"
-              iconUrl="/resources/iconpattern.png"
+              iconUrl="https://i.ibb.co/W4pfqymW/iconpattern.png"
               behindGlowEnabled={true}
               innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
             />

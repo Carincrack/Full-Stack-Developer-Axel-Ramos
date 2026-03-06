@@ -1,12 +1,13 @@
 "use client"
 
-import { Github, Linkedin, Mail } from "lucide-react"
+import { Github, Linkedin, Mail, Youtube } from "lucide-react"
 import LaserFlow from "./laser-flow"
 
 const socials = [
   { icon: Github, href: "https://github.com", label: "GitHub" },
   { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
   { icon: Mail, href: "mailto:contact@example.com", label: "Email" },
+  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
 ]
 
 export function Footer() {

@@ -1,6 +1,7 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useRef } from "react"
+import { motion, useScroll, useTransform, useSpring } from "framer-motion"
 import { Briefcase } from "lucide-react"
 import { SectionHeading } from "./section-heading"
 
@@ -32,8 +33,27 @@ const experiences = [
 ]
 
 export function Experience() {
+  const sectionRef = useRef<HTMLDivElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 75%", "end 35%"],
+  })
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 55,
+    damping: 18,
+    restDelta: 0.001,
+  })
+
+  // Glow line grows top → bottom
+  const lineScaleY = useTransform(smoothProgress, [0, 1], [0, 1])
+
+  // Orb travels the full height of the line
+  const orbY = useTransform(smoothProgress, [0, 1], ["0%", "100%"])
+
   return (
-    <section className="relative py-32">
+    <section ref={sectionRef} className="relative py-32">
       <div className="mx-auto max-w-[1400px] px-6">
         <SectionHeading
           tag="// experience"
@@ -42,9 +62,55 @@ export function Experience() {
         />
 
         <div className="relative mx-auto max-w-3xl">
-          {/* Vertical line */}
+
+          {/* Base track — always visible, very dim */}
           <div className="absolute left-[19px] top-0 h-full w-px bg-gradient-to-b from-border via-border to-transparent md:left-1/2 md:-translate-x-px" />
 
+          {/* Scroll-driven glow line */}
+          <motion.div
+            className="absolute left-[19px] top-0 w-px origin-top md:left-1/2 md:-translate-x-px"
+            style={{
+              scaleY: lineScaleY,
+              height: "100%",
+              background:
+                "linear-gradient(to bottom, transparent, #38bdf8 15%, #7dd3fc 55%, #38bdf8 85%, transparent)",
+              filter: "blur(0.6px)",
+              boxShadow: "0 0 6px 1px #38bdf850",
+            }}
+          />
+
+          {/* Travelling orb */}
+          <motion.div
+            className="pointer-events-none absolute left-[19px] z-10 md:left-1/2"
+            style={{ top: 0, y: orbY, x: "-50%" }}
+          >
+            {/* Soft outer halo */}
+            <div
+              style={{
+                position: "absolute",
+                width: 36,
+                height: 36,
+                borderRadius: "50%",
+                background: "radial-gradient(circle, #38bdf840 0%, transparent 70%)",
+                filter: "blur(6px)",
+                transform: "translate(-50%, -50%)",
+              }}
+            />
+            {/* Bright core */}
+            <div
+              style={{
+                position: "absolute",
+                width: 7,
+                height: 7,
+                borderRadius: "50%",
+                background: "#f0f9ff",
+                boxShadow: "0 0 8px 3px #38bdf8, 0 0 20px 6px #38bdf845",
+                transform: "translate(-50%, -50%)",
+              }}
+            />
+          </motion.div>
+
+          {/* Cards — original structure preserved */}
           {experiences.map((exp, index) => (
             <motion.div
               key={exp.role}
@@ -58,17 +124,7 @@ export function Experience() {
                   : "md:ml-auto md:pl-12 md:text-left"
               }`}
             >
-              {/* Dot */}
-              <div
-                className={`absolute left-2.5 top-1 flex h-[18px] w-[18px] items-center justify-center rounded-full border border-border bg-card md:top-1 ${
-                  index % 2 === 0
-                    ? "md:left-auto md:-right-[9px]"
-                    : "md:-left-[9px]"
-                }`}
-              >
-                <Briefcase size={10} className="text-accent" />
-              </div>
-
+              {/* Card — 100% original */}
               <div className="gradient-border rounded-xl bg-card/50 p-6 text-left transition-all hover:bg-card">
                 <span className="mb-2 inline-block font-mono text-xs text-accent">
                   {exp.period}

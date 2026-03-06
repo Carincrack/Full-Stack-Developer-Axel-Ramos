@@ -1,12 +1,7 @@
 "use client"
 
-import { useRef, useState } from "react"
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion"
+import { useRef, useState, useCallback } from "react"
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { ArrowUpRight, Github } from "lucide-react"
 import { SectionHeading } from "./section-heading"
 import LightRays from "./LightRays"
@@ -32,7 +27,7 @@ const projects = [
     demo: undefined,
   },
   {
-    name: "naori house",
+    name: "Haori House",
     description:
       "High-end frontend experiences built with modern animation libraries, 3D elements, and immersive scroll-driven interactions.",
     tech: ["JavaScript", "Css", "HTML"],
@@ -40,7 +35,7 @@ const projects = [
     video: "/projects/web-preview.mp4",
     demo: "https://naoristudio-house.vercel.app/",
     github: undefined,
-  },
+  }/* ,
   {
     name: "Smart Gym Analytics",
     description:
@@ -70,7 +65,7 @@ const projects = [
     video: "/projects/restaurant.mp4",
     demo: "#",
     github: undefined,
-  },
+  }, */
 ]
 
 function ProjectCard({
@@ -83,23 +78,38 @@ function ProjectCard({
   const cardRef  = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [isHovered, setIsHovered] = useState(false)
+  // FIX 1: Track whether the video src has been loaded at least once
+  const [videoLoaded, setVideoLoaded] = useState(false)
 
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
 
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), { stiffness: 200, damping: 30 })
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-6, 6]), { stiffness: 200, damping: 30 })
+  // FIX 2: Reduced stiffness/damping — less work per frame
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), { stiffness: 120, damping: 20 })
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), { stiffness: 120, damping: 20 })
 
-  function handleMouse(e: React.MouseEvent) {
-    const rect = cardRef.current?.getBoundingClientRect()
-    if (!rect) return
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5)
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5)
-  }
+  // FIX 3: Throttle mousemove with requestAnimationFrame
+  const rafRef = useRef<number | null>(null)
+  const handleMouse = useCallback((e: React.MouseEvent) => {
+    if (rafRef.current) return
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = cardRef.current?.getBoundingClientRect()
+      if (rect) {
+        mouseX.set((e.clientX - rect.left) / rect.width - 0.5)
+        mouseY.set((e.clientY - rect.top) / rect.height - 0.5)
+      }
+      rafRef.current = null
+    })
+  }, [mouseX, mouseY])
 
   function handleMouseEnter() {
     setIsHovered(true)
+    // FIX 4: Only set the video src on first hover (lazy load)
     if (videoRef.current) {
+      if (!videoLoaded) {
+        videoRef.current.src = project.video ?? ""
+        setVideoLoaded(true)
+      }
       videoRef.current.currentTime = 0
       videoRef.current.play().catch(() => {})
     }
@@ -109,6 +119,10 @@ function ProjectCard({
     mouseX.set(0)
     mouseY.set(0)
     setIsHovered(false)
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current)
+      rafRef.current = null
+    }
     if (videoRef.current) videoRef.current.pause()
   }
 
@@ -118,35 +132,38 @@ function ProjectCard({
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
+      transition={{ duration: 0.6, delay: index * 0.12 }}
       onMouseMove={handleMouse}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformPerspective: 1200 }}
-      className="group relative overflow-hidden rounded-2xl border border-border/30 bg-background/20 transition-all duration-300 hover:border-border/70 hover:shadow-2xl hover:shadow-black/20"
+      // FIX 5: will-change:transform hints the GPU to promote this layer
+      className="group relative overflow-hidden rounded-2xl border border-border/30 bg-background/20 transition-all duration-300 hover:border-border/70 hover:shadow-2xl hover:shadow-black/20 will-change-transform"
     >
-      {/* Imagen de fondo estática */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center transition-opacity duration-500"
-        style={{
-          backgroundImage: `url(${project.image})`,
-          opacity: isHovered ? 0 : 0.13,
-        }}
+      {/* FIX 6: Static bg via <img> with loading="lazy" instead of inline backgroundImage */}
+      <img
+        src={project.image}
+        alt=""
+        loading="lazy"
+        aria-hidden
+        className="absolute inset-0 z-0 h-full w-full object-cover transition-opacity duration-500"
+        style={{ opacity: isHovered ? 0 : 0.13 }}
       />
 
-      {/* Video en hover */}
+      {/* FIX 7: Video with NO src initially — src injected on first hover */}
       <motion.div
         className="absolute inset-0 z-0"
         animate={{ opacity: isHovered ? 1 : 0 }}
         transition={{ duration: 0.5 }}
       >
+        {/* No src here! It's set imperatively on first hover */}
         <video
           ref={videoRef}
-          src={project.video}
           muted
           loop
           playsInline
-          preload="metadata"
+          // FIX 8: preload="none" so nothing is fetched until hover
+          preload="none"
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/55 to-transparent" />
@@ -193,7 +210,7 @@ function ProjectCard({
           </div>
         </div>
 
-        {/* Título original */}
+        {/* Título */}
         <motion.h3
           className="mt-5 text-xl font-bold text-foreground"
           animate={{ opacity: isHovered ? 0 : 1, y: isHovered ? -4 : 0 }}
@@ -245,10 +262,8 @@ function ProjectCard({
 
 export function Projects() {
   return (
-    // ✅ SIN overflow-hidden — eso cortaba el LightRays al agregar más proyectos
     <section id="projects" className="relative py-32">
 
-      {/* LightRays — inset-0 para cubrir toda la sección sin cortes */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-[2]"
         initial={{ opacity: 0 }}
@@ -272,10 +287,7 @@ export function Projects() {
         />
       </motion.div>
 
-      {/* Fade top */}
       <div className="pointer-events-none absolute top-0 left-0 right-0 z-[3] h-24 bg-gradient-to-b from-background to-transparent" />
-
-      {/* Fade bottom */}
       <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[3] h-32 bg-gradient-to-t from-background to-transparent" />
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-6">
