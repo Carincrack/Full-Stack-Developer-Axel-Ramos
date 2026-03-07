@@ -6,7 +6,7 @@ import { ArrowDown, Github, Linkedin, Mail, Youtube } from "lucide-react"
 import { LaserFlow } from "./laser-flow"
 import { HeroMosaic } from "./Heromosaic"
 
-const RADIUS = 280
+const RADIUS = 380
 
 export function Hero() {
   const topLayerRef = useRef<HTMLDivElement>(null)
@@ -20,9 +20,9 @@ export function Hero() {
         transparent 0%,
         transparent 10%,
         rgba(0,0,0,0.10) 25%,
-       
-        rgba(0, 42, 55, 0.65) 58%,
-        rgba(0, 44, 71, 0.88) 74%,
+        rgba(0,0,0,0.35) 42%,
+        rgba(0,0,0,0.65) 58%,
+        rgba(0,0,0,0.88) 74%,
         black 90%
       )`
       topLayerRef.current.style.maskImage = mask
@@ -32,8 +32,16 @@ export function Hero() {
 
   const handleMouseLeave = useCallback(() => {
     if (topLayerRef.current) {
+      // Transition only on leave so the spotlight fades out smoothly
+      topLayerRef.current.style.transition = "mask-image 0.6s ease, -webkit-mask-image 0.6s ease"
       topLayerRef.current.style.maskImage = "unset"
       topLayerRef.current.style.webkitMaskImage = "unset"
+      // Remove transition after fade so it doesn't lag when moving cursor again
+      setTimeout(() => {
+        if (topLayerRef.current) {
+          topLayerRef.current.style.transition = ""
+        }
+      }, 650)
     }
   }, [])
 
