@@ -4,6 +4,11 @@ import { projects } from "./projects"
 
 const images = projects.map((p) => p.image)
 
+// ── Ajusta estos valores para cambiar el tono del mosaico ──
+const TINT_COLOR = "rgba(5, 31, 73, 0.35)"  // azul — cambia este color a gusto
+const BRIGHTNESS = 0.42
+const SATURATION = 0                           // 0 = blanco/negro, 1 = color original
+
 // 8 columns × 7 rows = 56 tiles — small and dense
 const COLS = 8
 const ROWS = 7
@@ -57,7 +62,7 @@ export function HeroMosaic() {
               transform: `rotate(${tile.rot}deg)`,
               borderRadius: "12px",
               zIndex: tile.z,
-              boxShadow: "0 6px 28px rgba(0, 0, 0, 0.6)",
+              boxShadow: "0 6px 28px rgba(0,0,0,0.6)",
             }}
           >
             <img
@@ -67,7 +72,15 @@ export function HeroMosaic() {
               draggable={false}
               className="h-full w-full select-none object-cover"
               style={{
-                filter: "grayscale(100%) brightness(0.42) contrast(1.1) sepia(15%) hue-rotate(190deg)",
+                filter: `grayscale(${(1 - SATURATION) * 100}%) brightness(${BRIGHTNESS}) contrast(1.1)`,
+              }}
+            />
+            {/* Color tint overlay — change TINT_COLOR above */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background: TINT_COLOR,
+                mixBlendMode: "color",
               }}
             />
           </div>

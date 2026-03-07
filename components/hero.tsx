@@ -6,7 +6,7 @@ import { ArrowDown, Github, Linkedin, Mail, Youtube } from "lucide-react"
 import { LaserFlow } from "./laser-flow"
 import { HeroMosaic } from "./Heromosaic"
 
-const RADIUS = 380
+const RADIUS = 280
 
 export function Hero() {
   const topLayerRef = useRef<HTMLDivElement>(null)
@@ -20,7 +20,7 @@ export function Hero() {
         transparent 0%,
         transparent 10%,
         rgba(0,0,0,0.10) 25%,
-        rgba(0,0,0,0.35) 42%,
+       
         rgba(0, 42, 55, 0.65) 58%,
         rgba(0, 44, 71, 0.88) 74%,
         black 90%
