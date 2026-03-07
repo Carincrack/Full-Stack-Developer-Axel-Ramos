@@ -2,36 +2,34 @@
 
 import { useRef } from "react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
-import { Briefcase } from "lucide-react"
 import { SectionHeading } from "./section-heading"
 
 const experiences = [
   {
     role: "Full Stack Developer",
-    company: "Freelance & Personal Projects",
-    period: "2023 - Present",
+    company: "Human Resources Management System — Final Engineering Project",
+    period: "2026 - Present",
     description:
-      "Designing and developing full-stack web applications with modern frameworks. Building scalable APIs, interactive dashboards, and deploying with Docker and cloud platforms.",
-    tech: ["Next.js", "NestJS", "PostgreSQL", "Docker", "Azure"],
+      "Developing a full-stack system for managing human resources for an organization in Puntarenas, Costa Rica. The platform manages employee records, internal processes, and administrative workflows while applying modern backend architecture.",
+    tech: ["Vite", "React", "MySQL", "TypeORM"],
   },
   {
     role: "Frontend Developer",
-    company: "Web Development Projects",
-    period: "2022 - 2023",
+    company: "Supplement & Fitness Store Project",
+    period: "2024 - 2025",
     description:
-      "Created responsive, high-performance user interfaces with React and modern CSS frameworks. Focused on component architecture, accessibility, and smooth animations.",
-    tech: ["React", "TypeScript", "TailwindCSS", "Vite", "Git"],
+      "Designed and developed a responsive website for a supplement and fitness store. Focused on modern UI design, responsive layouts, and creating a smooth user experience.",
+    tech: ["Vite", "React", "TailwindCSS", "MySQL"],
   },
   {
-    role: "Software Engineering Student",
-    company: "University & Self-Study",
-    period: "2021 - 2022",
+    role: "Information Systems Engineering Student",
+    company: "University Studies — Costa Rica",
+    period: "2021 - Present",
     description:
-      "Built foundational knowledge in algorithms, data structures, and object-oriented programming. Developed projects in C++, C#, and began exploring web technologies.",
+      "Currently studying Information Systems Engineering in Costa Rica while developing software projects and strengthening knowledge in algorithms, backend systems, and modern web technologies.",
     tech: ["C++", "C#", ".NET", "SQL Server", "HTML/CSS"],
   },
 ]
-
 export function Experience() {
   const sectionRef = useRef<HTMLDivElement>(null)
 

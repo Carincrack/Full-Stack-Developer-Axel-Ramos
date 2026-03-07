@@ -13,22 +13,22 @@ const _geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Axel Ramos | Full Stack Developer',
+  title: 'Full Stack Developer',
   description:
     'Full stack developer building scalable systems and modern web experiences. Specialized in React, Next.js, Node.js, and cloud technologies.',
   generator: 'v0.app',
   icons: {
     icon: [
       {
-        url: '/icon-light-32x32.png',
+        url: '/Ing.jpeg',
         media: '(prefers-color-scheme: light)',
       },
       {
-        url: '/icon-dark-32x32.png',
+        url: '/Ing.jpeg',
         media: '(prefers-color-scheme: dark)',
       },
       {
-        url: '/icon.svg',
+        url: '/diamante.png',
         type: 'image/svg+xml',
       },
     ],

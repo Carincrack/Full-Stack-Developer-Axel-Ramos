@@ -12,7 +12,7 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-border/40 py-10 overflow-hidden">
+    <footer className="relative  py-10 overflow-hidden">
 
       {/* Top fade to blend with section above */}
       <div className="absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
