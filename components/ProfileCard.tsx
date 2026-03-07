@@ -337,40 +337,44 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   ]);
 
   const cardRadius = '30px';
+const grainSvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E")`;
 
-  const cardStyle = useMemo(
-    () => ({
-      '--icon': iconUrl ? `url(${iconUrl})` : 'none',
-      '--grain': grainUrl ? `url(${grainUrl})` : 'none',
-      '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
-      '--behind-glow-color': behindGlowColor ?? 'rgba(125, 190, 255, 0.67)',
-      '--behind-glow-size': behindGlowSize ?? '50%',
-      '--pointer-x': '50%',
-      '--pointer-y': '50%',
-      '--pointer-from-center': '0',
-      '--pointer-from-top': '0.5',
-      '--pointer-from-left': '0.5',
-      '--card-opacity': '0',
-      '--rotate-x': '0deg',
-      '--rotate-y': '0deg',
-      '--background-x': '50%',
-      '--background-y': '50%',
-      '--card-radius': cardRadius,
-      '--sunpillar-1': 'hsl(2, 100%, 73%)',
-      '--sunpillar-2': 'hsl(53, 100%, 69%)',
-      '--sunpillar-3': 'hsl(93, 100%, 69%)',
-      '--sunpillar-4': 'hsl(176, 100%, 76%)',
-      '--sunpillar-5': 'hsl(228, 100%, 74%)',
-      '--sunpillar-6': 'hsl(283, 100%, 73%)',
-      '--sunpillar-clr-1': 'var(--sunpillar-1)',
-      '--sunpillar-clr-2': 'var(--sunpillar-2)',
-      '--sunpillar-clr-3': 'var(--sunpillar-3)',
-      '--sunpillar-clr-4': 'var(--sunpillar-4)',
-      '--sunpillar-clr-5': 'var(--sunpillar-5)',
-      '--sunpillar-clr-6': 'var(--sunpillar-6)'
-    }),
-    [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize, cardRadius]
-  );
+const cardStyle = useMemo(
+  () => ({
+    '--icon': iconUrl ? `url(${iconUrl})` : 'none',
+    '--grain': grainUrl ? `url(${grainUrl})` : grainSvg,  // ← siempre tiene grano
+    '--grain-opacity': '0.18',       // ← sube para más rugosidad (0.1 suave → 0.35 fuerte)
+    '--grain-blend': 'overlay',      // ← overlay = integrado, screen = más brillante
+    '--grain-size': '180px 180px',   // ← tamaño del patrón
+    '--inner-gradient': innerGradient ?? DEFAULT_INNER_GRADIENT,
+    '--behind-glow-color': behindGlowColor ?? 'rgba(82, 123, 164, 0.67)',
+    '--behind-glow-size': behindGlowSize ?? '50%',
+    '--pointer-x': '50%',
+    '--pointer-y': '50%',
+    '--pointer-from-center': '0',
+    '--pointer-from-top': '0.5',
+    '--pointer-from-left': '0.5',
+    '--card-opacity': '0',
+    '--rotate-x': '0deg',
+    '--rotate-y': '0deg',
+    '--background-x': '50%',
+    '--background-y': '50%',
+    '--card-radius': cardRadius,
+    '--sunpillar-1': 'hsl(2, 100%, 73%)',
+    '--sunpillar-2': 'hsl(53, 100%, 69%)',
+    '--sunpillar-3': 'hsl(93, 100%, 69%)',
+    '--sunpillar-4': 'hsl(176, 100%, 76%)',
+    '--sunpillar-5': 'hsl(228, 100%, 74%)',
+    '--sunpillar-6': 'hsl(283, 100%, 73%)',
+    '--sunpillar-clr-1': 'var(--sunpillar-1)',
+    '--sunpillar-clr-2': 'var(--sunpillar-2)',
+    '--sunpillar-clr-3': 'var(--sunpillar-3)',
+    '--sunpillar-clr-4': 'var(--sunpillar-4)',
+    '--sunpillar-clr-5': 'var(--sunpillar-5)',
+    '--sunpillar-clr-6': 'var(--sunpillar-6)',
+  }),
+  [iconUrl, grainUrl, innerGradient, behindGlowColor, behindGlowSize, cardRadius]
+);
 
   const handleContactClick = useCallback((): void => {
     onContactClick?.();
@@ -596,7 +600,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                 pointerEvents: 'none'
               }}
             >
-              <div className="w-full absolute flex flex-col" style={{ top: '3em', display: 'flex', gridArea: 'auto' }}>
+           
+<div className="w-full absolute flex flex-col" style={{ top: '25em' }}> 
                 <h3
                   className="font-semibold m-0"
                   style={{
@@ -618,8 +623,9 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                   className="font-semibold whitespace-nowrap mx-auto w-min"
                   style={{
                     position: 'relative',
-                    top: '-12px',
+                    top: 'px',   
                     fontSize: '16px',
+                    marginTop: '12px',
                     margin: '0 auto',
                     backgroundImage: 'linear-gradient(to bottom, #fff, #4a4ac0)',
                     backgroundSize: '1em 1.5em',

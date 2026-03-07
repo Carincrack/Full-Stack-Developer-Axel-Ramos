@@ -1,20 +1,141 @@
 "use client"
 
+import { useRef, useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { Send, MapPin, Clock, Mail } from "lucide-react"
+import { Send, MapPin, Clock, Mail, ArrowUpRight } from "lucide-react"
 import { SectionHeading } from "./section-heading"
 
-const meta = [
-  { icon: Mail, label: "Email", value: "contact@example.com" },
-  { icon: MapPin, label: "Location", value: "San José, Costa Rica" },
-  { icon: Clock, label: "Response time", value: "Within 24 hours" },
+/* ─── Types ─── */
+interface InfoRow {
+  icon: React.ElementType
+  label: string
+  value: string
+  marqueeText: string
+}
+
+const rows: InfoRow[] = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "contact@example.com",
+    marqueeText: "contact@example.com · write me ·",
+  },
+  {
+    icon: MapPin,
+    label: "Location",
+    value: "San José, Costa Rica",
+    marqueeText: "San José, Costa Rica · GMT-6 ·",
+  },
+  {
+    icon: Clock,
+    label: "Response",
+    value: "Within 24 hours",
+    marqueeText: "Within 24 hours · always on ·",
+  },
 ]
 
+/* ─── Flowing info row ─── */
+function FlowRow({ row }: { row: InfoRow }) {
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const marqueeRef = useRef<HTMLDivElement>(null)
+  const innerRef = useRef<HTMLDivElement>(null)
+  const rafRef = useRef<number>(0)
+  const xRef = useRef(0)
+  const [hovering, setHovering] = useState(false)
+
+  // Continuous marquee scroll
+  useEffect(() => {
+    const inner = innerRef.current
+    if (!inner) return
+    const half = inner.scrollWidth / 2
+
+    const tick = () => {
+      if (hovering) {
+        xRef.current -= 0.8
+        if (Math.abs(xRef.current) >= half) xRef.current = 0
+        inner.style.transform = `translateX(${xRef.current}px)`
+      }
+      rafRef.current = requestAnimationFrame(tick)
+    }
+    rafRef.current = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [hovering])
+
+  const getEdge = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = wrapRef.current!.getBoundingClientRect()
+    const y = e.clientY - r.top
+    return y < r.height / 2 ? "top" : "bottom"
+  }
+
+  const enter = (e: React.MouseEvent<HTMLDivElement>) => {
+    setHovering(true)
+    const marquee = marqueeRef.current!
+    const edge = getEdge(e)
+    marquee.style.transition = "none"
+    marquee.style.transform = `translateY(${edge === "top" ? "-100%" : "100%"})`
+    requestAnimationFrame(() => {
+      marquee.style.transition = "transform 0.52s cubic-bezier(0.16,1,0.3,1)"
+      marquee.style.transform = "translateY(0%)"
+    })
+  }
+
+  const leave = (e: React.MouseEvent<HTMLDivElement>) => {
+    setHovering(false)
+    const marquee = marqueeRef.current!
+    const edge = getEdge(e)
+    marquee.style.transition = "transform 0.52s cubic-bezier(0.16,1,0.3,1)"
+    marquee.style.transform = `translateY(${edge === "top" ? "-100%" : "100%"})`
+  }
+
+  const { icon: Icon } = row
+
+  return (
+    <div
+      ref={wrapRef}
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+      className="group relative flex cursor-default items-center justify-between overflow-hidden border-b border-border/30 py-5 px-2 select-none transition-colors duration-200 hover:border-accent/50"
+    >
+      {/* Default state */}
+      <div className="flex items-center gap-4 transition-opacity duration-300 group-hover:opacity-0">
+        <Icon size={14} className="text-muted-foreground shrink-0" />
+        <span className="text-[11px] uppercase tracking-widest text-muted-foreground w-20 shrink-0">
+          {row.label}
+        </span>
+        <span className="text-sm font-medium text-foreground">{row.value}</span>
+      </div>
+      <ArrowUpRight
+        size={14}
+        className="text-muted-foreground/40 shrink-0 transition-opacity duration-300 group-hover:opacity-0"
+      />
+
+      {/* Marquee overlay */}
+      <div
+        ref={marqueeRef}
+        className="pointer-events-none absolute inset-0 flex items-center bg-accent"
+        style={{ transform: "translateY(100%)" }}
+      >
+        <div ref={innerRef} className="flex whitespace-nowrap">
+          {[...Array(6)].map((_, i) => (
+            <span
+              key={i}
+              className="mr-8 text-sm font-semibold uppercase tracking-widest text-accent-foreground"
+            >
+              {row.marqueeText}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Main section ─── */
 export function Contact() {
   return (
     <section id="contact" className="relative py-32">
-      {/* Glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,_oklch(0.5_0.15_250_/_0.06)_0%,_transparent_70%)]" />
+      {/* Ambient glow */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,_oklch(0.5_0.15_250_/_0.05)_0%,_transparent_70%)]" />
 
       <div className="relative mx-auto max-w-[1400px] px-6">
         <SectionHeading
@@ -23,123 +144,119 @@ export function Contact() {
           description="Have a project in mind or want to collaborate? Send me a message."
         />
 
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 lg:grid-cols-[1fr_1.6fr]">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-16 lg:grid-cols-[1fr_1.6fr]">
 
-          {/* ── Left col: info ── */}
+          {/* ── Left: flowing rows ── */}
           <motion.div
             initial={{ opacity: 0, x: -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col gap-4"
+            className="flex flex-col justify-between"
           >
-            {/* Disponibilidad */}
-            <div className="gradient-border rounded-2xl bg-card/50 p-6">
-              <span className="mb-3 inline-flex items-center gap-2 text-xs text-muted-foreground">
-                <span className="relative flex h-2 w-2">
-                  
+            {/* Availability badge */}
+            <div className="mb-8">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border/40 bg-card/40 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-sm">
+                <span className="relative flex h-1.5 w-1.5">
+                
                 </span>
                 Available for work
               </span>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                I'm currently open to freelance projects and full-time opportunities. Let's build something great together.
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                Open to freelance projects and full-time roles. Let's build something great together.
               </p>
             </div>
 
-            {/* Meta items */}
-            <div className="gradient-border rounded-2xl bg-card/50 p-6">
-              <ul className="flex flex-col gap-5">
-                {meta.map(({ icon: Icon, label, value }) => (
-                  <li key={label} className="flex items-center gap-4">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-secondary/30">
-                      <Icon size={15} className="text-muted-foreground" />
-                    </div>
-                    <div>
-                      <p className="text-[11px] text-muted-foreground">{label}</p>
-                      <p className="text-sm font-medium text-foreground">{value}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            {/* Flowing info rows */}
+            <div className="border-t border-border/30">
+              {rows.map((row) => (
+                <FlowRow key={row.label} row={row} />
+              ))}
             </div>
           </motion.div>
 
-          {/* ── Right col: form ── */}
+          {/* ── Right: editorial form ── */}
           <motion.div
             initial={{ opacity: 0, x: 24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            <div className="gradient-border rounded-2xl bg-card/50 p-8 md:p-10">
-              <form
-                onSubmit={(e) => e.preventDefault()}
-                className="flex flex-col gap-5"
-              >
-                {/* Name + Email en fila */}
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  <div>
-                    <label
-                      htmlFor="name"
-                      className="mb-2 block text-sm font-medium text-foreground"
-                    >
-                      Name
-                    </label>
-                    <input
-                      id="name"
-                      type="text"
-                      placeholder="Your name"
-                      className="w-full rounded-lg border border-border/60 bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
-                    />
-                  </div>
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="gradient-border flex flex-col gap-0 rounded-2xl bg-card/50 p-8"
+            >
+              {/* Name */}
+              <FieldRow label="01 — Name">
+                <input
+                  type="text"
+                  placeholder="Your name"
+                  className="w-full bg-transparent py-4 text-sm text-foreground placeholder-muted-foreground/40 outline-none"
+                />
+              </FieldRow>
 
-                  <div>
-                    <label
-                      htmlFor="email"
-                      className="mb-2 block text-sm font-medium text-foreground"
-                    >
-                      Email
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      placeholder="your@email.com"
-                      className="w-full rounded-lg border border-border/60 bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
-                    />
-                  </div>
-                </div>
+              {/* Email */}
+              <FieldRow label="02 — Email">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  className="w-full bg-transparent py-4 text-sm text-foreground placeholder-muted-foreground/40 outline-none"
+                />
+              </FieldRow>
 
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="mb-2 block text-sm font-medium text-foreground"
-                  >
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={6}
-                    placeholder="Tell me about your project..."
-                    className="w-full resize-none rounded-lg border border-border/60 bg-secondary/30 px-4 py-3 text-sm text-foreground placeholder-muted-foreground outline-none transition-colors focus:border-accent/50 focus:ring-1 focus:ring-accent/30"
-                  />
-                </div>
+              {/* Message */}
+              <FieldRow label="03 — Message" tall>
+                <textarea
+                  rows={4}
+                  placeholder="Tell me about your project..."
+                  className="w-full resize-none bg-transparent py-4 text-sm text-foreground placeholder-muted-foreground/40 outline-none"
+                />
+              </FieldRow>
 
+              {/* Submit */}
+              <div className="pt-8">
                 <button
                   type="submit"
-                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-foreground px-6 py-3.5 text-sm font-semibold text-background transition-all hover:opacity-90 hover:shadow-lg hover:shadow-accent/20"
+                  className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-foreground/20 bg-foreground px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:border-accent/60 hover:shadow-[0_0_40px_theme(colors.accent.DEFAULT/0.35)]"
                 >
-                  Send Message
+                  <span className="relative z-10">Send Message</span>
                   <Send
-                    size={16}
-                    className="transition-transform group-hover:translate-x-0.5"
+                    size={14}
+                    className="relative z-10 transition-transform duration-300 group-hover:translate-x-1"
                   />
+                  {/* Sweep effect */}
+                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           </motion.div>
 
         </div>
       </div>
     </section>
+  )
+}
+
+/* ─── Field row helper ─── */
+function FieldRow({
+  label,
+  children,
+  tall,
+}: {
+  label: string
+  children: React.ReactNode
+  tall?: boolean
+}) {
+  return (
+    <div className="group">
+      <div className="flex items-start">
+        <span className="w-28 shrink-0 pt-[18px] pb-2 text-[10px] uppercase tracking-widest text-foreground/70 transition-colors duration-200 group-hover:text-foreground">
+          {label}
+        </span>
+        <div className="flex-1">{children}</div>
+      </div>
+      {/* Line always right below content */}
+      <div className="h-px w-full bg-border/30 transition-colors duration-200 group-hover:bg-accent/50 group-focus-within:bg-accent/70" />
+    </div>
   )
 }

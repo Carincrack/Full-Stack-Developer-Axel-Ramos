@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Code2, Database, Globe, Zap } from "lucide-react"
-import { SectionHeading } from "./section-heading"
-import ProfileCard from "./ProfileCard"
+import { motion } from "framer-motion";
+import { Code2, Database, Globe, Zap } from "lucide-react";
+import { SectionHeading } from "./section-heading";
+import ProfileCard from "./ProfileCard";
 
 const highlights = [
   {
@@ -30,16 +30,13 @@ const highlights = [
     description:
       "TypeScript-first development with React, Next.js, NestJS, and containerized deployments.",
   },
-]
+];
 
 export function About() {
   return (
     <section id="about" className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        <SectionHeading
-          tag="// about"
-          title="About Me"
-        />
+        <SectionHeading tag="// about" title="About Me" />
 
         {/*
           Mobile:  1 columna apilada
@@ -47,7 +44,6 @@ export function About() {
           Desktop: 3 columnas iguales
         */}
         <div className="grid items-start gap-8 lg:gap-10 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 z-50">
-
           {/* ── Col 1 — ProfileCard ── */}
           {/* En mobile/tablet: centrado y ancho controlado */}
           <motion.div
@@ -61,11 +57,11 @@ export function About() {
             <ProfileCard
               name="Axel R.V"
               title="Systems Engineer"
-            avatarUrl="github-profile.png" 
+              avatarUrl="resources/Sinfondo.png"
+              /*  avatarUrl="resources/Perfil.png"  */
               showUserInfo={false}
               enableTilt={true}
               enableMobileTilt={false}
-            
               behindGlowColor="rgba(125, 190, 255, 0.67)"
               iconUrl="https://i.ibb.co/W4pfqymW/iconpattern.png"
               behindGlowEnabled={true}
@@ -83,29 +79,31 @@ export function About() {
           >
             <div className="gradient-border rounded-2xl bg-card/50 p-6 sm:p-8 md:p-10">
               <p className="mb-5 text-base sm:text-lg leading-relaxed text-muted-foreground">
-                I am a full stack developer focused on modern web architectures,
-                scalable backends, and high-performance interfaces. I enjoy the
-                process of turning complex problems into elegant, functional
-                solutions.
+                I am a Systems Engineer and Full Stack Developer focused on
+                designing and building modern software systems, scalable
+                backends, and high-performance web applications.
               </p>
+
               <p className="mb-5 leading-relaxed text-sm sm:text-base text-muted-foreground">
-                With experience across the entire development lifecycle, I work
-                with technologies like React, Next.js, Node.js, NestJS, and
-                multiple database systems to deliver production-ready
-                applications.
+                My experience covers the full development lifecycle, including
+                system architecture, database design, backend development, and
+                modern frontend interfaces using technologies like React,
+                Next.js, Node.js, and NestJS.
               </p>
+
               <p className="leading-relaxed text-sm sm:text-base text-muted-foreground">
-                I am passionate about clean code, developer experience, and
-                building tools that make a real impact. Currently open to new
-                opportunities and exciting projects.
+                I focus on creating efficient, scalable, and maintainable
+                solutions, applying engineering principles, clean code
+                practices, and modern development workflows to build reliable
+                production-ready systems.
               </p>
 
               {/* Stats */}
               <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border/50 pt-8">
                 {[
                   { value: "24+", label: "Technologies" },
-                  { value: "3+",  label: "Years Exp."   },
-                  { value: "10+", label: "Projects"     },
+                  { value: "3+", label: "Years Exp." },
+                  { value: "10+", label: "Projects" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">
                     <div className="text-xl sm:text-2xl font-bold text-foreground">
@@ -124,7 +122,7 @@ export function About() {
           {/* En tablet ocupa las 2 columnas completo, en desktop solo 1 */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4 md:col-span-2 lg:col-span-1">
             {highlights.map((item, index) => {
-              const Icon = item.icon
+              const Icon = item.icon;
               return (
                 <motion.div
                   key={item.title}
@@ -145,12 +143,11 @@ export function About() {
                     {item.description}
                   </p>
                 </motion.div>
-              )
+              );
             })}
           </div>
-
         </div>
       </div>
     </section>
-  )
+  );
 }

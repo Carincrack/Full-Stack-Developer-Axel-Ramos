@@ -33,7 +33,7 @@ export function Hero() {
   const handleMouseLeave = useCallback(() => {
     if (topLayerRef.current) {
       // Transition only on leave so the spotlight fades out smoothly
-      topLayerRef.current.style.transition = "mask-image 0.6s ease, -webkit-mask-image 0.6s ease"
+      topLayerRef.current.style.transition = "mask-image 1s ease, -webkit-mask-image 0.6s ease"
       topLayerRef.current.style.maskImage = "unset"
       topLayerRef.current.style.webkitMaskImage = "unset"
       // Remove transition after fade so it doesn't lag when moving cursor again
