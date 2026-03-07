@@ -127,7 +127,7 @@ function ProjectCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformPerspective: 1200 }}
-      className="group relative overflow-hidden rounded-2xl border border-border/30 bg-background/20 will-change-transform hover:border-border/70 hover:shadow-2xl hover:shadow-black/20"
+      className="group relative cursor-default select-none overflow-hidden rounded-2xl border border-border/30 bg-background/20 will-change-transform hover:border-border/70 hover:shadow-2xl hover:shadow-black/20"
     >
       {/* Imagen de fondo */}
       <img
@@ -155,7 +155,7 @@ function ProjectCard({
       <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-background/90 via-background/5 to-transparent opacity-100 transition-opacity duration-400 group-hover:opacity-0" />
 
       {/* Contenido */}
-      <div className="relative z-40 flex flex-col p-8" style={{ minHeight: 300 }}>
+      <div className="pointer-events-none relative z-40 flex flex-col p-8" style={{ minHeight: 300 }}>
         {/* Número + botones */}
         <div className="flex items-center justify-between">
           <span className="font-mono text-xs text-muted-foreground/40">
@@ -167,8 +167,7 @@ function ProjectCard({
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg border border-border/40 bg-background/50 p-2 text-muted-foreground transition-all hover:border-accent/50 hover:text-foreground"
-                onClick={(e) => e.stopPropagation()}
+                className="pointer-events-auto rounded-lg border border-border/40 bg-background/50 p-2 text-muted-foreground transition-all hover:border-accent/50 hover:text-foreground"
               >
                 <Github size={15} />
               </a>
@@ -178,8 +177,7 @@ function ProjectCard({
                 href={project.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg border border-border/40 bg-background/50 p-2 text-muted-foreground transition-all hover:border-accent/50 hover:text-foreground"
-                onClick={(e) => e.stopPropagation()}
+                className="pointer-events-auto rounded-lg border border-border/40 bg-background/50 p-2 text-muted-foreground transition-all hover:border-accent/50 hover:text-foreground"
               >
                 <ArrowUpRight size={15} />
               </a>
@@ -217,22 +215,20 @@ function ProjectCard({
         {project.name}
       </h3>
 
-      {/* Play button */}
-      <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <motion.button
-          onClick={(e) => {
-            e.stopPropagation()
-            onOpenModal(project)
-          }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ duration: 0.18, ease: "easeOut" }}
-          aria-label={`Ver video de ${project.name}`}
-          className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/25 bg-black/40 backdrop-blur-md shadow-[0_0_30px_rgba(255,255,255,0.08)] transition-[border-color,box-shadow] duration-200 hover:border-white/50 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
-        >
-          <Play size={20} fill="white" className="ml-1 text-white drop-shadow-md" />
-        </motion.button>
-      </div>
+      {/* Play button — solo en el centro, no cubre toda la card */}
+      <motion.button
+        onClick={(e) => {
+          e.stopPropagation()
+          onOpenModal(project)
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        transition={{ duration: 0.18, ease: "easeOut" }}
+        aria-label={`Ver video de ${project.name}`}
+        className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border border-white/25 bg-black/40 backdrop-blur-md shadow-[0_0_30px_rgba(255,255,255,0.08)] opacity-0 group-hover:opacity-100 transition-[opacity,border-color,box-shadow] duration-300 hover:border-white/50 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+      >
+        <Play size={20} fill="white" className="ml-1 text-white drop-shadow-md" />
+      </motion.button>
     </motion.div>
   )
 }
