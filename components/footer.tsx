@@ -20,14 +20,14 @@ export function Footer() {
       {/* Grainient background */}
       <div className="absolute inset-0 z-0">
         <Grainient
-          color1="#00dcdf"
-          color2="#00859f"
-          color3="#004e70"
+          color1="#0091df"
+          color2="#005c84"
+          color3="#006d9b"
           timeSpeed={0.4}
           colorBalance={-0.39}
           warpStrength={1}
           warpFrequency={5}
-          warpSpeed={3}
+          warpSpeed={2}
           warpAmplitude={50}
           blendAngle={0}
           blendSoftness={0.05}
