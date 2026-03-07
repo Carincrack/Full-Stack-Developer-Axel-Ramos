@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react"
 import { motion } from "framer-motion"
-import { Send, MapPin, Clock, Mail, ArrowUpRight } from "lucide-react"
+import { Send, MapPin, Clock, Mail, ArrowUpRight, Download } from "lucide-react"
 import { SectionHeading } from "./section-heading"
 
 /* ─── Types ─── */
@@ -43,7 +43,6 @@ function FlowRow({ row }: { row: InfoRow }) {
   const xRef = useRef(0)
   const [hovering, setHovering] = useState(false)
 
-  // Continuous marquee scroll
   useEffect(() => {
     const inner = innerRef.current
     if (!inner) return
@@ -96,7 +95,6 @@ function FlowRow({ row }: { row: InfoRow }) {
       onMouseLeave={leave}
       className="group relative flex cursor-default items-center justify-between overflow-hidden border-b border-border/30 py-5 px-2 select-none transition-colors duration-200 hover:border-accent/50"
     >
-      {/* Default state */}
       <div className="flex items-center gap-4 transition-opacity duration-300 group-hover:opacity-0">
         <Icon size={14} className="text-muted-foreground shrink-0" />
         <span className="text-[11px] uppercase tracking-widest text-muted-foreground w-20 shrink-0">
@@ -109,7 +107,6 @@ function FlowRow({ row }: { row: InfoRow }) {
         className="text-muted-foreground/40 shrink-0 transition-opacity duration-300 group-hover:opacity-0"
       />
 
-      {/* Marquee overlay */}
       <div
         ref={marqueeRef}
         className="pointer-events-none absolute inset-0 flex items-center bg-accent"
@@ -134,7 +131,6 @@ function FlowRow({ row }: { row: InfoRow }) {
 export function Contact() {
   return (
     <section id="contact" className="relative py-32">
-      {/* Ambient glow */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,_oklch(0.5_0.15_250_/_0.05)_0%,_transparent_70%)]" />
 
       <div className="relative mx-auto max-w-[1400px] px-6">
@@ -154,20 +150,29 @@ export function Contact() {
             transition={{ duration: 0.6 }}
             className="flex flex-col justify-between"
           >
-            {/* Availability badge */}
             <div className="mb-8">
               <span className="inline-flex items-center gap-2 rounded-full border border-border/40 bg-card/40 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-sm">
-                <span className="relative flex h-1.5 w-1.5">
-                
-                </span>
+                <span className="relative flex h-1.5 w-1.5"></span>
                 Available for work
               </span>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
                 Open to freelance projects and full-time roles. Let's build something great together.
               </p>
+
+              {/* ── CV Download Button ── */}
+              <a
+                href="/cv/Axel Ramos Villegas.pdf"
+                download="Axel Ramos Villegas.pdf"
+                className="group mt-6 inline-flex items-center gap-3 rounded-full border border-border/40 bg-card/40 px-5 py-2.5 text-xs font-medium uppercase tracking-widest text-muted-foreground backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:bg-accent/10 hover:text-foreground"
+              >
+                <Download
+                  size={12}
+                  className="transition-transform duration-300 group-hover:-translate-y-0.5"
+                />
+                Download CV
+              </a>
             </div>
 
-            {/* Flowing info rows */}
             <div className="border-t border-border/30">
               {rows.map((row) => (
                 <FlowRow key={row.label} row={row} />
@@ -186,7 +191,6 @@ export function Contact() {
               onSubmit={(e) => e.preventDefault()}
               className="gradient-border flex flex-col gap-0 rounded-2xl bg-card/50 p-8"
             >
-              {/* Name */}
               <FieldRow label="01 — Name">
                 <input
                   type="text"
@@ -195,7 +199,6 @@ export function Contact() {
                 />
               </FieldRow>
 
-              {/* Email */}
               <FieldRow label="02 — Email">
                 <input
                   type="email"
@@ -204,7 +207,6 @@ export function Contact() {
                 />
               </FieldRow>
 
-              {/* Message */}
               <FieldRow label="03 — Message" tall>
                 <textarea
                   rows={4}
@@ -213,7 +215,6 @@ export function Contact() {
                 />
               </FieldRow>
 
-              {/* Submit */}
               <div className="pt-8">
                 <button
                   type="submit"
@@ -224,7 +225,6 @@ export function Contact() {
                     size={14}
                     className="relative z-10 transition-transform duration-300 group-hover:translate-x-1"
                   />
-                  {/* Sweep effect */}
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
                 </button>
               </div>
@@ -255,7 +255,6 @@ function FieldRow({
         </span>
         <div className="flex-1">{children}</div>
       </div>
-      {/* Line always right below content */}
       <div className="h-px w-full bg-border/30 transition-colors duration-200 group-hover:bg-accent/50 group-focus-within:bg-accent/70" />
     </div>
   )
