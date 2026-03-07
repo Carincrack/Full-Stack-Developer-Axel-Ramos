@@ -1,7 +1,7 @@
 "use client"
 
 import { Github, Linkedin, Mail, Youtube } from "lucide-react"
-import LaserFlow from "./laser-flow"
+import Grainient from "./Grainient"
 
 const socials = [
   { icon: Github, href: "https://github.com", label: "GitHub" },
@@ -14,10 +14,38 @@ export function Footer() {
   return (
     <footer className="relative border-t border-border/40 py-10 overflow-hidden">
 
-      {/* LaserFlow limitado */}
- 
+      {/* Top fade to blend with section above */}
+      <div className="absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-background to-transparent pointer-events-none" />
 
-      {/* Contenido */}
+      {/* Grainient background */}
+      <div className="absolute inset-0 z-0">
+        <Grainient
+          color1="#00dcdf"
+          color2="#00859f"
+          color3="#004e70"
+          timeSpeed={0.4}
+          colorBalance={-0.39}
+          warpStrength={1}
+          warpFrequency={5}
+          warpSpeed={3}
+          warpAmplitude={50}
+          blendAngle={0}
+          blendSoftness={0.05}
+          rotationAmount={500}
+          noiseScale={2}
+          grainAmount={0.1}
+          grainScale={2}
+          grainAnimated={false}
+          contrast={1.5}
+          gamma={1}
+          saturation={1}
+          centerX={0}
+          centerY={0}
+          zoom={0.9}
+        />
+      </div>
+
+      {/* Content */}
       <div className="relative z-10 mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 px-6 sm:flex-row">
         <p className="font-mono text-xs text-muted-foreground">
           {"Designed & built by "}
