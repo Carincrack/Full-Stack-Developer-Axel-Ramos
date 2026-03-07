@@ -6,8 +6,7 @@ import { ArrowUpRight, Github, Play } from "lucide-react"
 import { SectionHeading } from "./section-heading"
 import LightRays from "./LightRays"
 import { VideoModal } from "./videomodal"
-
-const projects = [
+export const projects = [
   {
     name: "Vivero Paraíso del Cactus",
     description:

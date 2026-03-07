@@ -6,7 +6,7 @@ import { ArrowDown, Github, Linkedin, Mail, Youtube } from "lucide-react"
 import { LaserFlow } from "./laser-flow"
 import { HeroMosaic } from "./Heromosaic"
 
-const RADIUS = 200
+const RADIUS = 380
 
 export function Hero() {
   const topLayerRef = useRef<HTMLDivElement>(null)
@@ -17,9 +17,13 @@ export function Hero() {
     const y = e.clientY - rect.top
     if (topLayerRef.current) {
       const mask = `radial-gradient(circle ${RADIUS}px at ${x}px ${y}px,
-
-        rgba(0, 85, 113, 0.6) 50%,
-        black 100%
+        transparent 0%,
+        transparent 10%,
+        rgba(0,0,0,0.10) 25%,
+        rgba(0,0,0,0.35) 42%,
+        rgba(0, 42, 55, 0.65) 58%,
+        rgba(0, 44, 71, 0.88) 74%,
+        black 90%
       )`
       topLayerRef.current.style.maskImage = mask
       topLayerRef.current.style.webkitMaskImage = mask
@@ -40,40 +44,40 @@ export function Hero() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Layer 1 — Mosaic tiles, always behind everything */}
+      {/* Layer 1 — Mosaic, always at bottom */}
       <HeroMosaic />
 
-      {/* Layer 2 — solid black bg + LaserFlow together.
-          This whole div gets masked so both disappear under the cursor,
-          revealing the mosaic below */}
-      <div ref={topLayerRef} className="absolute inset-0 z-[2]">
-        {/* Solid black background so mosaic never bleeds through LaserFlow transparency */}
-        <div className="absolute inset-0 bg-black" />
-        {/* LaserFlow on top of black */}
-        <div className="absolute inset-0">
-          <LaserFlow
-            color="#7abaff"
-            wispDensity={0.9}
-            flowSpeed={0.1}
-            verticalSizing={3}
-            horizontalSizing={0.5}
-            fogIntensity={0.45}
-            fogScale={0.1}
-            wispSpeed={15}
-            wispIntensity={5.7}
-            flowStrength={0.15}
-            decay={6}
-            horizontalBeamOffset={0}
-            verticalBeamOffset={-0.5}
-          />
-        </div>
+      {/* Layer 2 — dark overlay between mosaic and LaserFlow.
+          Gets masked on hover → reveals mosaic behind LaserFlow */}
+      <div
+        ref={topLayerRef}
+        className="pointer-events-none absolute inset-0 z-[2] bg-black"
+      />
+
+      {/* Layer 3 — LaserFlow always fully visible on top, never touched */}
+      <div className="absolute inset-0 z-[3]">
+        <LaserFlow
+          color="#7abaff"
+          wispDensity={0.9}
+          flowSpeed={0.1}
+          verticalSizing={3}
+          horizontalSizing={0.5}
+          fogIntensity={0.45}
+          fogScale={0.1}
+          wispSpeed={15}
+          wispIntensity={5.7}
+          flowStrength={0.15}
+          decay={6}
+          horizontalBeamOffset={0}
+          verticalBeamOffset={-0.5}
+        />
       </div>
 
       {/* Top fade */}
-      <div className="pointer-events-none absolute top-0 left-0 right-0 z-[3] h-32 bg-gradient-to-b from-background/80 to-transparent" />
+      <div className="pointer-events-none absolute top-0 left-0 right-0 z-[4] h-32 bg-gradient-to-b from-background/80 to-transparent" />
 
       {/* Bottom fade */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[3] h-32 sm:h-48 bg-gradient-to-t from-background to-transparent" />
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[4] h-32 sm:h-48 bg-gradient-to-t from-background to-transparent" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-[1400px] px-4 sm:px-6 text-center">

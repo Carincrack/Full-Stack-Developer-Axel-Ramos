@@ -1,25 +1,22 @@
 "use client"
 
-const images = [
-  "/resources/vivero.png",
-  "/resources/Gym.png",
-  "/resources/House.png",
-  "/resources/azuliverde.png",
-  "/resources/Hansen.png",
-]
+import { projects } from "./projects"
 
-// 4 columns × 4 rows = 16 tiles
-// Each column is offset vertically by ~half a tile to interleave
-// Individual rotations are tiny (±2deg max) so it stays clean
-const COLS = 4
-const ROWS = 4
-const COL_W = 26   // % width per tile
-const ROW_H = 30   // % height per tile
-const GAP_X = 2    // % horizontal gap
-const GAP_Y = 2    // % vertical gap
-const OFFSET_Y = 15 // % vertical offset for odd columns (interleave)
+const images = projects.map((p) => p.image)
 
-const rots = [-2, 1.5, -1, 2, 1, -1.5, 2, -2, 1, -1, 1.5, -2, 2, -1.5, 1, -1]
+// 8 columns × 7 rows = 56 tiles — small and dense
+const COLS = 8
+const ROWS = 7
+const COL_W = 13
+const ROW_H = 17
+const GAP_X = 0.8
+const GAP_Y = 0.8
+const OFFSET_Y = 9
+
+const rots = Array.from({ length: COLS * ROWS }, (_, i) => {
+  const pattern = [-1.5, 1, -2, 1.5, -1, 2, -1.5, 1]
+  return pattern[i % pattern.length]
+})
 
 const tiles = Array.from({ length: COLS * ROWS }, (_, i) => {
   const col = i % COLS
@@ -60,7 +57,7 @@ export function HeroMosaic() {
               transform: `rotate(${tile.rot}deg)`,
               borderRadius: "12px",
               zIndex: tile.z,
-              boxShadow: "0 6px 28px rgba(0,0,0,0.6)",
+              boxShadow: "0 6px 28px rgba(0, 0, 0, 0.6)",
             }}
           >
             <img
