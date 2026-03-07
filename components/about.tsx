@@ -61,7 +61,7 @@ export function About() {
             <ProfileCard
               name="Axel R.V"
               title="Systems Engineer"
-            avatarUrl="https://i.ibb.co/0jZsKZP/profile.png" 
+            avatarUrl="github-profile.png" 
               showUserInfo={false}
               enableTilt={true}
               enableMobileTilt={false}

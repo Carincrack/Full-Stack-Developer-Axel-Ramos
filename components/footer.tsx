@@ -12,8 +12,29 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/40 py-10">
-      <div className="mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 px-6 sm:flex-row">
+    <footer className="relative border-t border-border/40 py-10 overflow-hidden">
+
+      {/* LaserFlow limitado */}
+      <div className="pointer-events-none absolute left-0 right-0 top-1/2 h-32 -translate-y-1/2 opacity-80 z-0">
+        <LaserFlow
+          color="#7abaff"
+          wispDensity={0.6}
+          flowSpeed={0.08}
+          verticalSizing={1.5}
+          horizontalSizing={1}
+          fogIntensity={0.1}
+          fogScale={3}
+          wispSpeed={10}
+          wispIntensity={4}
+          flowStrength={0.12}
+          decay={5}
+          horizontalBeamOffset={-0.2}
+          verticalBeamOffset={0}
+        />
+      </div>
+
+      {/* Contenido */}
+      <div className="relative z-10 mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 px-6 sm:flex-row">
         <p className="font-mono text-xs text-muted-foreground">
           {"Designed & built by "}
           <span className="text-foreground">Axel Ramos Villegas</span>
@@ -34,23 +55,7 @@ export function Footer() {
           ))}
         </div>
       </div>
-         <div className="absolute inset-0 z-0">
-              <LaserFlow
-                color="#7abaff"
-                wispDensity={0.9}
-                flowSpeed={0.1}
-                verticalSizing={2}
-                horizontalSizing={1}
-                fogIntensity={0.45}
-                fogScale={0.1}
-                wispSpeed={15}
-                wispIntensity={5.7}
-                flowStrength={0.15}
-                decay={6}
-                horizontalBeamOffset={-0.3}
-                verticalBeamOffset={-0.5}
-              />
-            </div>
+
     </footer>
   )
 }
