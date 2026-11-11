@@ -23,14 +23,13 @@ type Project = {
 
 export const projects: Project[] = [
   {
-    name: "TuanisCan",
+    name: "Aroma Perfumes",
     description:
-      "Red para reportar y encontrar mascotas perdidas en Costa Rica. Cada mascota tiene su perfil, los avisos se buscan por zona y la comunidad ayuda a que vuelvan a casa.",
-    tech: ["React", "TypeScript", "Vite", "Tailwind CSS"],
-    image: "/resources/tuaniscan.webp",
-    video: "/resources/videos/tuaniscan.mp4",
+      "Landing informativa de una tienda de perfumes árabes: los perfumes destacados con sus notas y perfil olfativo, la colección completa y un modo día y noche.",
+    tech: ["React", "TypeScript", "Vite", "Tailwind CSS", "GSAP"],
+    image: "/resources/aroma.webp",
+    video: "/resources/videos/aroma.mp4",
     featured: true,
-    rights: "team",
   },
   {
     name: "Lanakú Hotel",
