@@ -24,6 +24,8 @@ export interface MagicBentoProps {
   glowColor?: string
   clickEffect?: boolean
   enableMagnetism?: boolean
+  /** Partículas flotando siempre (también en celular), no solo al pasar el mouse */
+  ambientParticles?: boolean
 }
 
 const DEFAULT_PARTICLE_COUNT = 12
@@ -42,7 +44,7 @@ const createParticleElement = (x: number, y: number, color: string): HTMLDivElem
     background: rgba(${color}, 1);
     box-shadow: 0 0 6px rgba(${color}, 0.6);
     pointer-events: none;
-    z-index: 100;
+    z-index: 0;
     left: ${x}px;
     top: ${y}px;
   `
@@ -75,6 +77,7 @@ const ParticleCard: React.FC<{
   enableTilt?: boolean
   clickEffect?: boolean
   enableMagnetism?: boolean
+  ambient?: boolean
 }> = ({
   children,
   className = '',
@@ -85,6 +88,7 @@ const ParticleCard: React.FC<{
   enableTilt = true,
   clickEffect = false,
   enableMagnetism = false,
+  ambient = false,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null)
   const particlesRef = useRef<HTMLDivElement[]>([])
@@ -130,12 +134,13 @@ const ParticleCard: React.FC<{
         cardRef.current.appendChild(clone)
         particlesRef.current.push(clone)
         gsap.fromTo(clone, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' })
+        // Deriva lenta y suave (ida y vuelta), como burbujas
         gsap.to(clone, {
           x: (Math.random() - 0.5) * 100,
           y: (Math.random() - 0.5) * 100,
           rotation: Math.random() * 360,
-          duration: 2 + Math.random() * 2,
-          ease: 'none',
+          duration: 3.5 + Math.random() * 3,
+          ease: 'sine.inOut',
           repeat: -1,
           yoyo: true,
         })
@@ -151,20 +156,42 @@ const ParticleCard: React.FC<{
     })
   }, [initializeParticles])
 
+  // Modo ambiente: las partículas arrancan solas al montar y no se borran al salir el mouse
+  useEffect(() => {
+    if (!ambient || !cardRef.current) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    isHoveredRef.current = true
+    animateParticles()
+    // Rendimiento: las partículas se pausan cuando la tarjeta sale de pantalla
+    const io = new IntersectionObserver(([entry]) => {
+      gsap.getTweensOf(particlesRef.current).forEach((t) => (entry.isIntersecting ? t.resume() : t.pause()))
+    })
+    io.observe(cardRef.current)
+    return () => {
+      io.disconnect()
+      isHoveredRef.current = false
+      clearAllParticles()
+    }
+  }, [ambient, animateParticles, clearAllParticles])
+
   useEffect(() => {
     if (disableAnimations || !cardRef.current) return
     const element = cardRef.current
 
     const handleMouseEnter = () => {
-      isHoveredRef.current = true
-      animateParticles()
+      if (!ambient) {
+        isHoveredRef.current = true
+        animateParticles()
+      }
       if (enableTilt) {
         gsap.to(element, { rotateX: 5, rotateY: 5, duration: 0.3, ease: 'power2.out', transformPerspective: 1000 })
       }
     }
     const handleMouseLeave = () => {
-      isHoveredRef.current = false
-      clearAllParticles()
+      if (!ambient) {
+        isHoveredRef.current = false
+        clearAllParticles()
+      }
       if (enableTilt) gsap.to(element, { rotateX: 0, rotateY: 0, duration: 0.3, ease: 'power2.out' })
       if (enableMagnetism) gsap.to(element, { x: 0, y: 0, duration: 0.3, ease: 'power2.out' })
     }
@@ -225,14 +252,16 @@ const ParticleCard: React.FC<{
     element.addEventListener('mousemove', handleMouseMove)
     element.addEventListener('click', handleClick)
     return () => {
-      isHoveredRef.current = false
       element.removeEventListener('mouseenter', handleMouseEnter)
       element.removeEventListener('mouseleave', handleMouseLeave)
       element.removeEventListener('mousemove', handleMouseMove)
       element.removeEventListener('click', handleClick)
-      clearAllParticles()
+      if (!ambient) {
+        isHoveredRef.current = false
+        clearAllParticles()
+      }
     }
-  }, [animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor])
+  }, [ambient, animateParticles, clearAllParticles, disableAnimations, enableTilt, enableMagnetism, clickEffect, glowColor])
 
   return (
     <div ref={cardRef} className={`${className} relative overflow-hidden`} style={{ ...style, position: 'relative', overflow: 'hidden' }}>
@@ -347,6 +376,7 @@ const MagicBento: React.FC<MagicBentoProps> = ({
   glowColor = DEFAULT_GLOW_COLOR,
   clickEffect = true,
   enableMagnetism = false,
+  ambientParticles = false,
 }) => {
   const gridRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -405,7 +435,8 @@ const MagicBento: React.FC<MagicBentoProps> = ({
       <div className="bento-section relative w-full" ref={gridRef}>
         <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {cards.map((card, index) => {
-            const isLarge = index === 0 || index === 1
+            // Las cuatro tarjetas a dos columnas: grilla pareja de 2×2, sin hueco en la segunda fila
+            const isLarge = true
             const baseClassName = `bento-card flex flex-col justify-between relative w-full p-5 rounded-2xl border border-border/40 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${
               enableBorderGlow ? 'bento-card--border-glow' : ''
             } ${isLarge ? 'lg:col-span-2 min-h-[220px]' : 'min-h-[200px]'}`
@@ -446,6 +477,7 @@ const MagicBento: React.FC<MagicBentoProps> = ({
                   enableTilt={enableTilt}
                   clickEffect={clickEffect}
                   enableMagnetism={enableMagnetism}
+                  ambient={ambientParticles}
                 >
                   {content}
                 </ParticleCard>

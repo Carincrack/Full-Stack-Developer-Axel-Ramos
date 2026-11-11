@@ -10,6 +10,7 @@ interface TechItem {
   name: string
   category: string
   icon: string
+  dark?: boolean // logo negro: se invierte para que se vea sobre el fondo oscuro
 }
 
 const techStack: TechItem[] = [
@@ -26,7 +27,7 @@ const techStack: TechItem[] = [
   // Backend
   { name: "Node.js", category: "Backend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" },
   { name: "NestJS", category: "Backend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nestjs/nestjs-original.svg" },
-  { name: "Express.js", category: "Backend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg" },
+  { name: "Express.js", category: "Backend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/express/express-original.svg", dark: true },
   { name: "C#", category: "Backend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg" },
   { name: ".NET", category: "Backend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dot-net/dot-net-original.svg" },
   { name: "C++", category: "Backend", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" },
@@ -37,9 +38,9 @@ const techStack: TechItem[] = [
   // DevOps & Tools
   { name: "Docker", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" },
   { name: "Git", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" },
-  { name: "GitHub", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" },
+  { name: "GitHub", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg", dark: true },
   { name: "Azure DevOps", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/azure/azure-original.svg" },
-  { name: "Vercel", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg" },
+  { name: "Vercel", category: "DevOps", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vercel/vercel-original.svg", dark: true },
   {name: "Railway", category: "DevOps", icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAOVBMVEUAAAA7OzuXl5e+vr7S0tJ2dnbo6Oj///8LCwvb29v6+voyMjJOTk5sbGygoKCurq6EhITCwsLIyMg/5z2vAAAADHRSTlP//////////////v5RwSCUAAAAq0lEQVR4Aa3SBQKEIAAEwKWbi///1aK5jrFdpfEPhDLOGSW4JaTKpJgibdTG7vvGaHScrVG6uu6/nKka2/Zvra7lBoUvgoilcoHkVEUa4FI5Mv83Fhogj18JBj7Vd8ZRK8Uu8syoRDi1YdidY0EzXLaQp9LCRCDWkF4mEbIWq8nE89YgYvjkuuEE6de7kJzVHWdk5jYzw5TZcZsmu2fdvEzqUlDm/QU2Lc3frU1iDemt76AZAAAAAElFTkSuQmCC" },
 ]
 
@@ -52,24 +53,24 @@ const categories = [
 
 function TechIconGrid({ items }: { items: TechItem[] }) {
   return (
-    <div className="flex flex-wrap gap-2 text-nowrap" >
+    <div className="flex flex-wrap gap-2.5 text-nowrap">
       {items.map((tech) => (
         <motion.div
           key={tech.name}
-          whileHover={{ scale: 1.1, y: -2 }}
+          whileHover={{ scale: 1.06, y: -2 }}
           transition={{ type: "spring", stiffness: 400, damping: 20 }}
-          className="group flex items-center gap-2 rounded-lg border border-border/30 bg-background/30 px-2.5 py-1.5 backdrop-blur-sm transition-colors hover:border-accent/30 hover:bg-background/50"
+          className="group flex items-center gap-2.5 rounded-xl border border-border/30 bg-background/40 px-3 py-2 backdrop-blur-sm transition-colors hover:border-accent/30 hover:bg-background/60"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={tech.icon}
             alt={`${tech.name} logo`}
-            width={18}
-            height={18}
-            className="h-[18px] w-[18px] shrink-0"
+            width={26}
+            height={26}
+            className={`h-[22px] w-[22px] shrink-0 sm:h-[26px] sm:w-[26px] ${tech.dark ? "invert" : ""}`}
             loading="lazy"
           />
-          <span className="text-xs font-medium text-muted-foreground transition-colors group-hover:text-foreground select-none">
+          <span className="select-none text-[13px] font-medium text-foreground/80 transition-colors group-hover:text-foreground sm:text-sm">
             {tech.name}
           </span>
         </motion.div>
@@ -118,6 +119,7 @@ export function TechStack() {
             particleCount={12}
             glowColor="122, 186, 255"
             disableAnimations={false}
+            ambientParticles
           />
         </motion.div>
       </div>

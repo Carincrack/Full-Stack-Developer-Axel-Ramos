@@ -17,13 +17,13 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://full-stack-developer-axel-ramos.vercel.app'),
   title: 'Axel Ramos — Desarrollador Full Stack',
   description:
-    'Desarrollador full stack e ingeniero en sistemas en Costa Rica. Sistemas web completos con React, Next.js, Node.js y NestJS.',
+    'Full stack developer enfocado en frontend y diseño web. Sitios y aplicaciones web rápidos, claros y bien hechos con React, Next.js y NestJS.',
 
   // ── WhatsApp / redes sociales ──
   openGraph: {
     title: 'Axel Ramos — Desarrollador Full Stack',
     description:
-      'Desarrollador full stack en Costa Rica: sistemas web completos, de la base de datos a la pantalla.',
+      'Full stack developer enfocado en frontend y diseño web: sitios y aplicaciones web rápidos, claros y bien hechos.',
     url: '/',
     siteName: 'Axel Ramos',
     images: [
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Axel Ramos — Desarrollador Full Stack',
-    description: 'Desarrollador full stack en Costa Rica: sistemas web completos, de la base de datos a la pantalla.',
+    description: 'Full stack developer enfocado en frontend y diseño web: sitios y aplicaciones web rápidos, claros y bien hechos.',
     images: ['/Ing.jpeg'],
   },
 

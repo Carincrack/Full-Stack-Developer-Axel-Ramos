@@ -2,10 +2,11 @@
 
 import { useRef, useCallback, useState } from "react"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
-import { ArrowUpRight, Github, Play } from "lucide-react"
+import { ArrowUpRight, Github, Play, ShieldCheck } from "lucide-react"
 import { SectionHeading } from "./section-heading"
 import LightRays from "./LightRays"
 import { VideoModal } from "./videomodal"
+import { RIGHTS, type Rights } from "@/lib/site"
 type Project = {
   name: string
   description: string
@@ -15,7 +16,9 @@ type Project = {
   demo?: string
   github?: string
   featured?: boolean // producto estrella: 2 columnas × 2 filas en escritorio
-  wide?: boolean // 2 columnas, para que la grilla cierre pareja
+  wide?: boolean // 2 columnas, para que la grilla cierre pareja (sin hueco al final)
+  year?: number // año en que se hizo, para el © (si falta, el año actual)
+  rights?: Rights // aviso de derechos: "team" (con su equipo) u "own" (hecho por Axel); sin valor = sin aviso
 }
 
 export const projects: Project[] = [
@@ -27,6 +30,7 @@ export const projects: Project[] = [
     image: "/resources/tuaniscan.webp",
     video: "/resources/videos/tuaniscan.mp4",
     featured: true,
+    rights: "team",
   },
   {
     name: "Lanakú Hotel",
@@ -35,6 +39,7 @@ export const projects: Project[] = [
     tech: ["React", "TypeScript", "Vite"],
     image: "/resources/lanaku.webp",
     video: "/resources/videos/lanaku.mp4",
+    rights: "team",
   },
   {
     name: "Esteban Hernández",
@@ -43,6 +48,8 @@ export const projects: Project[] = [
     tech: ["Diseño web", "Frontend"],
     image: "/resources/audiovisual.webp",
     video: "/resources/videos/audiovisual.mp4",
+    rights: "own",
+    year: 2025,
   },
   {
     name: "Gym LIFTUP Suplementos",
@@ -51,6 +58,8 @@ export const projects: Project[] = [
     tech: ["React", "TypeScript", "NestJS", "MySQL", "Tailwind CSS"],
     image: "/resources/gym.webp",
     video: "/resources/videos/Gym.mp4",
+    rights: "own",
+    year: 2025,
     wide: true,
   },
   {
@@ -60,6 +69,8 @@ export const projects: Project[] = [
     tech: ["React", "TypeScript"],
     image: "/resources/hansen.webp",
     video: "/resources/videos/Hacienda.mp4",
+    rights: "own",
+    year: 2024,
   },
   {
     name: "Vivero Paraíso del Cactus",
@@ -68,6 +79,8 @@ export const projects: Project[] = [
     tech: ["React", "TypeScript", "GSAP", "Tailwind CSS"],
     image: "/resources/vivero.webp",
     video: "/resources/videos/video1.mp4",
+    rights: "own",
+    year: 2025,
     demo: "https://viveroparaiso.vercel.app/",
   },
   {
@@ -126,6 +139,8 @@ function ProjectCard({
   )
 
   function handleMouseEnter() {
+    // Rendimiento: en pantallas táctiles el "hover" es un toque; no descargar la vista previa (abre el modal)
+    if (!window.matchMedia("(hover: hover)").matches) return
     if (videoRef.current) {
       if (!videoLoaded.current) {
         videoRef.current.src = project.video ?? ""
@@ -156,8 +171,9 @@ function ProjectCard({
       onMouseMove={handleMouse}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={() => onOpenModal(project)} // un clic en cualquier parte de la tarjeta abre el video
       style={{ rotateX, rotateY, transformPerspective: 1200 }}
-      className={`group relative cursor-default select-none overflow-hidden rounded-2xl border border-border/30 bg-background/20 will-change-transform hover:border-border/70 hover:shadow-2xl hover:shadow-black/20 ${project.featured ? "lg:col-span-2 lg:row-span-2" : project.wide ? "lg:col-span-2" : ""}`}
+      className={`group relative cursor-pointer select-none overflow-hidden rounded-2xl border border-border/30 bg-background will-change-transform hover:border-border/70 hover:shadow-2xl hover:shadow-black/20 ${project.featured ? "lg:col-span-2 lg:row-span-2" : project.wide ? "lg:col-span-2" : ""}`}
     >
       {/* Imagen de fondo */}
       <img
@@ -198,6 +214,7 @@ function ProjectCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Código de ${project.name} en GitHub`}
+                onClick={(e) => e.stopPropagation()}
                 className="pointer-events-auto rounded-lg border border-border/40 bg-background/50 p-2 text-muted-foreground transition-all hover:border-accent/50 hover:text-foreground"
               >
                 <Github size={15} />
@@ -209,6 +226,7 @@ function ProjectCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Abrir el sitio de ${project.name}`}
+                onClick={(e) => e.stopPropagation()}
                 className="pointer-events-auto rounded-lg border border-border/40 bg-background/50 p-2 text-muted-foreground transition-all hover:border-accent/50 hover:text-foreground"
               >
                 <ArrowUpRight size={15} />
@@ -240,12 +258,36 @@ function ProjectCard({
             </span>
           ))}
         </div>
+
+        {/* Derechos en reposo (y en celular): al pie, dentro del contenido para que nunca choque */}
+        {project.rights && (
+          <p className="mt-4 flex items-start gap-1.5 border-t border-white/[0.06] pt-3 text-[11px] leading-snug text-muted-foreground/80 transition-all duration-[250ms] group-hover:translate-y-2 group-hover:opacity-0">
+            <ShieldCheck size={12} className="mt-px shrink-0 text-accent/80" />
+            <span>
+              © {project.year ?? RIGHTS.year} · {RIGHTS.label} · {RIGHTS.credit[project.rights]}
+            </span>
+          </p>
+        )}
       </div>
 
       {/* Título al fondo en hover */}
-      <h3 className="absolute bottom-8 left-8 right-8 z-20 translate-y-4 text-xl font-bold text-white opacity-0 drop-shadow-lg transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100">
+      <h3
+        className={`absolute bottom-8 left-8 z-20 translate-y-4 truncate text-xl font-bold text-white opacity-0 drop-shadow-lg transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100 ${
+          project.rights ? "max-w-[52%]" : "right-8"
+        }`}
+      >
         {project.name}
       </h3>
+
+      {/* Marca de derechos: abajo a la derecha, alineada con el título; sin caja, como marca de agua */}
+      {project.rights && (
+        <div className="pointer-events-none absolute bottom-8 right-8 z-20 max-w-[44%] translate-y-4 text-right opacity-0 transition-all delay-75 duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] [text-shadow:0_1px_8px_rgba(0,0,0,0.85)] group-hover:translate-y-0 group-hover:opacity-100">
+          <p className="font-mono text-[9px] uppercase leading-tight tracking-[0.16em] text-white/55">{RIGHTS.label}</p>
+          <p className="mt-1 text-[11px] font-medium leading-tight text-white/85">
+            © {project.year ?? RIGHTS.year} · {RIGHTS.credit[project.rights]}
+          </p>
+        </div>
+      )}
 
       {/* Play button — solo en el centro; en pantallas táctiles (sin hover) queda siempre visible */}
       <motion.button
@@ -271,8 +313,15 @@ export function Projects() {
   return (
     <section id="projects" className="relative py-32">
 
+      {/* Celular: en vez de los rayos blancos (que en pantallas angostas lavan todo), un resplandor azul suave */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-[70vh] bg-[radial-gradient(ellipse_at_top,oklch(0.6_0.15_250/0.16)_0%,oklch(0.6_0.15_250/0.05)_40%,transparent_70%)] md:hidden"
+      />
+
+      {/* Escritorio: rayos de luz (no se montan en celular: con display none nunca arrancan) */}
       <motion.div
-        className="pointer-events-none absolute inset-0 z-[2]"
+        className="pointer-events-none absolute inset-0 z-[2] hidden md:block"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: false, amount: 0.1 }}

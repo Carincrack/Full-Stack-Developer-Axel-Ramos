@@ -63,30 +63,28 @@ export function Hero() {
         className="pointer-events-none absolute inset-0 z-[2] bg-black"
       />
 
-      {/* Layer 3 — LaserFlow always fully visible on top, never touched */}
+      {/* Layer 3 — LaserFlow de React Bits con los valores que Axel ajustó en su editor
+          (color, intensidad, degradado). Sin tarjeta: el rayo toca el borde de abajo del hero
+          (surfaceLevel 1, como en su ejemplo public/ejemplo/image.png). */}
       <div className="absolute inset-0 z-[3]">
         <LaserFlow
-          color="#7abaff"
-          wispDensity={0.9}
-          flowSpeed={0.1}
-          verticalSizing={3}
-          horizontalSizing={0.5}
-          fogIntensity={0.45}
-          fogScale={0.1}
-          wispSpeed={15}
-          wispIntensity={5.7}
-          flowStrength={0.15}
-          decay={6}
-          horizontalBeamOffset={0}
-          verticalBeamOffset={-0.5}
+          beamPosition={0.48}
+          surfaceLevel={1}
+          color="#002be2"
+          intensity={1.8}
+          flare={1.8}
+          spread={1.5}
+          spill={1}
+          fog={0.15}
+          dust={1.4}
+          beamWidth={2.5}
+          seed={2}
         />
       </div>
 
       {/* Top fade */}
       <div className="pointer-events-none absolute top-0 left-0 right-0 z-[4] h-32 bg-gradient-to-b from-background/80 to-transparent" />
 
-      {/* Bottom fade */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[4] h-32 sm:h-48 bg-gradient-to-t from-background to-transparent" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-[1400px] px-4 sm:px-6 text-center">
@@ -107,10 +105,11 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="mx-auto mt-6 max-w-md sm:max-w-xl text-cyan-50 text-pretty text-base sm:text-lg md:text-xl"
+          className="mx-auto mt-6 max-w-md text-pretty text-base leading-relaxed text-white/75 sm:max-w-2xl sm:text-lg md:text-xl"
         >
-          Desarrollador full stack e ingeniero en sistemas en Costa Rica.
-          Hago sistemas web completos, de la base de datos a la pantalla.
+          Diseño y construyo sitios y aplicaciones web que se sienten{" "}
+          <span className="text-white">rápidos, claros y bien hechos</span>: interfaces
+          cuidadas al detalle, con un backend sólido detrás.
         </motion.p>
 
         <motion.div

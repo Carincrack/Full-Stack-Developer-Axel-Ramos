@@ -224,10 +224,17 @@ const Grainient: React.FC<GrainientProps> = ({
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
+
+    // Rendimiento: solo anima mientras el footer está en pantalla
+    const io = new IntersectionObserver(([entry]) => {
+      cancelAnimationFrame(raf);
+      if (entry.isIntersecting) raf = requestAnimationFrame(loop);
+    });
+    io.observe(container);
 
     return () => {
       cancelAnimationFrame(raf);
+      io.disconnect();
       ro.disconnect();
       try {
         container.removeChild(canvas);

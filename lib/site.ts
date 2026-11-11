@@ -13,3 +13,15 @@ export const socials = [
   { icon: Linkedin, href: site.linkedin, label: "LinkedIn" },
   { icon: Mail, href: site.email && `mailto:${site.email}`, label: "Correo" },
 ].filter((s) => s.href)
+
+// Aviso de derechos de los proyectos. "team" = hecho con su equipo; "own" = hecho por Axel.
+// Sin "®" ni "marca registrada": eso solo aplica a marcas ya inscritas en el Registro.
+export type Rights = "team" | "own"
+export const RIGHTS = {
+  year: new Date().getFullYear(),
+  label: "Nombre e identidad reservados",
+  credit: {
+    team: "Equipo de desarrollo",
+    own: "Axel Ramos",
+  } satisfies Record<Rights, string>,
+}
