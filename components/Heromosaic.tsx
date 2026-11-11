@@ -28,7 +28,8 @@ const tiles = Array.from({ length: COLS * ROWS }, (_, i) => {
   const row = Math.floor(i / COLS)
   const isOdd = col % 2 === 1
   return {
-    img: i % images.length,
+    // Avanza 1 foto por columna y 3 por fila: ninguna queda junto a una igual (ni al lado, ni arriba, ni en diagonal)
+    img: (col + row * 3) % images.length,
     left: col * (COL_W + GAP_X) - 2,
     top: row * (ROW_H + GAP_Y) - 5 + (isOdd ? OFFSET_Y : 0),
     w: COL_W,

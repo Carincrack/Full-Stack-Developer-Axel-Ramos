@@ -13,24 +13,25 @@ const _geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Axel Ramos — Full Stack Developer',
+  // Base para que las imágenes de la vista previa (WhatsApp, LinkedIn) salgan con URL absoluta
+  metadataBase: new URL('https://full-stack-developer-axel-ramos.vercel.app'),
+  title: 'Axel Ramos — Desarrollador Full Stack',
   description:
-    'Full stack developer building scalable systems and modern web experiences. Specialized in React, Next.js, Node.js, and cloud technologies.',
-  generator: 'v0.app',
+    'Desarrollador full stack e ingeniero en sistemas en Costa Rica. Sistemas web completos con React, Next.js, Node.js y NestJS.',
 
   // ── WhatsApp / redes sociales ──
   openGraph: {
-    title: 'Axel Ramos — Full Stack Developer',
+    title: 'Axel Ramos — Desarrollador Full Stack',
     description:
-      'Full stack developer building scalable systems and modern web experiences.',
-    url: 'full-stack-developer-axel-ramos.vercel.app', // 👈 pon tu URL real aquí
+      'Desarrollador full stack en Costa Rica: sistemas web completos, de la base de datos a la pantalla.',
+    url: '/',
     siteName: 'Axel Ramos',
     images: [
       {
         url: '/Ing.jpeg',
         width: 1200,
         height: 630,
-        alt: 'Axel Ramos — Full Stack Developer',
+        alt: 'Axel Ramos — Desarrollador Full Stack',
       },
     ],
     locale: 'es_CR',
@@ -38,8 +39,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Axel Ramos — Full Stack Developer',
-    description: 'Full stack developer building scalable systems and modern web experiences.',
+    title: 'Axel Ramos — Desarrollador Full Stack',
+    description: 'Desarrollador full stack en Costa Rica: sistemas web completos, de la base de datos a la pantalla.',
     images: ['/Ing.jpeg'],
   },
 
@@ -47,9 +48,9 @@ export const metadata: Metadata = {
     icon: [
       { url: '/Ing.jpeg', media: '(prefers-color-scheme: light)' },
       { url: '/Ing.jpeg', media: '(prefers-color-scheme: dark)' },
-      { url: '/diamante.png', type: 'image/svg+xml' },
+      { url: '/diamante.png', type: 'image/png' },
     ],
-    apple: '/apple-icon.png',
+    apple: '/Ing.jpeg',
   },
 }
 
@@ -65,7 +66,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${_inter.variable} ${_geistMono.variable}`}>
+    <html lang="es-CR" className={`${_inter.variable} ${_geistMono.variable}`}>
       <body className="font-sans antialiased noise-bg">
         {children}
         <Analytics />

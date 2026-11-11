@@ -5,11 +5,12 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "Tech", href: "#tech" },
-  { label: "Projects", href: "#projects" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Inicio", href: "#home" },
+  { label: "Stack", href: "#tech" },
+  { label: "Proyectos", href: "#projects" },
+  { label: "Sobre mí", href: "#about" },
+  { label: "Trayectoria", href: "#experience" },
+  { label: "Contacto", href: "#contact" },
 ]
 
 export function Navbar() {
@@ -57,16 +58,17 @@ export function Navbar() {
 
         <a
           href="#contact"
-          className="hidden rounded-lg bg-foreground px-5 py-2 text-sm font-medium text-background transition-opacity hover:opacity-90 md:inline-flex"
+          className="hidden rounded-lg bg-foreground px-5 py-2 text-sm font-medium text-background transition-[transform,opacity] duration-150 ease-[var(--ease-out)] hover:opacity-90 active:scale-[0.97] md:inline-flex"
         >
-          Get in touch
+          Hablemos
         </a>
 
         {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="text-foreground md:hidden"
-          aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
+          className="-mr-2.5 p-2.5 text-foreground md:hidden"
+          aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={mobileOpen}
         >
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
@@ -99,7 +101,7 @@ export function Navbar() {
                   onClick={() => setMobileOpen(false)}
                   className="inline-flex rounded-lg bg-foreground px-5 py-2 text-sm font-medium text-background"
                 >
-                  Get in touch
+                  Hablemos
                 </a>
               </li>
             </ul>

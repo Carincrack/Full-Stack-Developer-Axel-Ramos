@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Send, MapPin, Clock, Mail, ArrowUpRight, Download } from "lucide-react"
 import { SectionHeading } from "./section-heading"
+import { site } from "@/lib/site"
 
 /* ─── Types ─── */
 interface InfoRow {
@@ -16,23 +17,33 @@ interface InfoRow {
 const rows: InfoRow[] = [
   {
     icon: Mail,
-    label: "Email",
-    value: "contact@example.com",
-    marqueeText: "contact@example.com · write me ·",
+    label: "Correo",
+    value: site.email,
+    marqueeText: `${site.email} · escríbame ·`,
   },
   {
     icon: MapPin,
-    label: "Location",
-    value: "San José, Costa Rica",
-    marqueeText: "San José, Costa Rica · GMT-6 ·",
+    label: "Ubicación",
+    value: site.location,
+    marqueeText: `${site.location} · GMT-6 ·`,
   },
   {
     icon: Clock,
-    label: "Response",
-    value: "Within 24 hours",
-    marqueeText: "Within 24 hours · always on ·",
+    label: "Respuesta",
+    value: "En menos de 24 horas",
+    marqueeText: "En menos de 24 horas · siempre atento ·",
   },
-]
+].filter((r) => r.value)
+
+// shortcut: el formulario abre el correo del visitante (mailto); si algún día hace falta enviar sin salir de la página, conectar Resend o Formspree.
+function sendByMail(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault()
+  if (!site.email) return
+  const f = new FormData(e.currentTarget)
+  const subject = `Contacto desde el portafolio — ${f.get("name")}`
+  const body = `${f.get("message")}\n\n${f.get("name")} · ${f.get("email")}`
+  window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
 
 /* ─── Flowing info row ─── */
 function FlowRow({ row }: { row: InfoRow }) {
@@ -136,8 +147,8 @@ export function Contact() {
       <div className="relative mx-auto max-w-[1400px] px-6">
         <SectionHeading
           tag="// contact"
-          title="Get In Touch"
-          description="Have a project in mind or want to collaborate? Send me a message."
+          title="Hablemos"
+          description="¿Tiene un proyecto en mente o una vacante? Escríbame y le respondo pronto."
         />
 
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-16 lg:grid-cols-[1fr_1.6fr]">
@@ -152,24 +163,27 @@ export function Contact() {
           >
             <div className="mb-8">
               <span className="inline-flex items-center gap-2 rounded-full border border-border/40 bg-card/40 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur-sm">
-                <span className="relative flex h-1.5 w-1.5"></span>
-                Available for work
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                </span>
+                Disponible para trabajar
               </span>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                Open to freelance projects and full-time roles. Let's build something great together.
+                Abierto a proyectos freelance y a puestos de tiempo completo.
               </p>
 
               {/* ── CV Download Button ── */}
               <a
                 href="/cv/Axel Ramos Villegas.pdf"
                 download="Axel Ramos Villegas.pdf"
-                className="group mt-6 inline-flex items-center gap-3 rounded-full border border-border/40 bg-card/40 px-5 py-2.5 text-xs font-medium uppercase tracking-widest text-muted-foreground backdrop-blur-sm transition-all duration-300 hover:border-accent/50 hover:bg-accent/10 hover:text-foreground"
+                className="group mt-6 inline-flex items-center gap-3 rounded-full border border-border/40 bg-card/40 px-5 py-2.5 text-xs font-medium uppercase tracking-widest text-muted-foreground backdrop-blur-sm transition-[transform,border-color,background-color,color] duration-200 ease-[var(--ease-out)] hover:border-accent/50 hover:bg-accent/10 hover:text-foreground active:scale-[0.97]"
               >
                 <Download
                   size={12}
                   className="transition-transform duration-300 group-hover:-translate-y-0.5"
                 />
-                Download CV
+                Descargar CV
               </a>
             </div>
 
@@ -188,29 +202,37 @@ export function Contact() {
             transition={{ duration: 0.6, delay: 0.1 }}
           >
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={sendByMail}
               className="gradient-border flex flex-col gap-0 rounded-2xl bg-card/50 p-8"
             >
-              <FieldRow label="01 — Name">
+              <FieldRow label="01 — Nombre">
                 <input
                   type="text"
-                  placeholder="Your name"
+                  name="name"
+                  required
+                  autoComplete="name"
+                  placeholder="Su nombre"
                   className="w-full bg-transparent py-4 text-sm text-foreground placeholder-muted-foreground/40 outline-none"
                 />
               </FieldRow>
 
-              <FieldRow label="02 — Email">
+              <FieldRow label="02 — Correo">
                 <input
                   type="email"
-                  placeholder="your@email.com"
+                  name="email"
+                  required
+                  autoComplete="email"
+                  placeholder="su@correo.com"
                   className="w-full bg-transparent py-4 text-sm text-foreground placeholder-muted-foreground/40 outline-none"
                 />
               </FieldRow>
 
-              <FieldRow label="03 — Message" tall>
+              <FieldRow label="03 — Mensaje" tall>
                 <textarea
+                  name="message"
+                  required
                   rows={4}
-                  placeholder="Tell me about your project..."
+                  placeholder="Cuénteme sobre su proyecto…"
                   className="w-full resize-none bg-transparent py-4 text-sm text-foreground placeholder-muted-foreground/40 outline-none"
                 />
               </FieldRow>
@@ -218,9 +240,9 @@ export function Contact() {
               <div className="pt-8">
                 <button
                   type="submit"
-                  className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-foreground/20 bg-foreground px-8 py-4 text-sm font-semibold text-background transition-all duration-300 hover:border-accent/60 hover:shadow-[0_0_40px_theme(colors.accent.DEFAULT/0.35)]"
+                  className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-foreground/20 bg-foreground px-8 py-4 text-sm font-semibold text-background transition-[transform,border-color,box-shadow] duration-200 ease-[var(--ease-out)] active:scale-[0.97] hover:border-accent/60 hover:shadow-[0_0_40px_theme(colors.accent.DEFAULT/0.35)]"
                 >
-                  <span className="relative z-10">Send Message</span>
+                  <span className="relative z-10">Enviar mensaje</span>
                   <Send
                     size={14}
                     className="relative z-10 transition-transform duration-300 group-hover:translate-x-1"
@@ -248,7 +270,7 @@ function FieldRow({
   tall?: boolean
 }) {
   return (
-    <div className="group">
+    <label className="group block">
       <div className="flex items-start">
         <span className="w-28 shrink-0 pt-[18px] pb-2 text-[10px] uppercase tracking-widest text-foreground/70 transition-colors duration-200 group-hover:text-foreground">
           {label}
@@ -256,6 +278,6 @@ function FieldRow({
         <div className="flex-1">{children}</div>
       </div>
       <div className="h-px w-full bg-border/30 transition-colors duration-200 group-hover:bg-accent/50 group-focus-within:bg-accent/70" />
-    </div>
+    </label>
   )
 }

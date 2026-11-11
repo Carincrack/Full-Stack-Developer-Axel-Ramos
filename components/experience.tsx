@@ -6,27 +6,27 @@ import { SectionHeading } from "./section-heading"
 
 const experiences = [
   {
-    role: "Full Stack Developer",
-    company: "Human Resources Management System — Final Engineering Project",
-    period: "2026 - Present",
+    role: "Desarrollador full stack",
+    company: "Sistema de gestión de recursos humanos — Proyecto final de ingeniería",
+    period: "2026 - Actualidad",
     description:
-      "Developing a full-stack system for managing human resources for an organization in Puntarenas, Costa Rica. The platform manages employee records, internal processes, and administrative workflows while applying modern backend architecture.",
+      "Desarrollo un sistema full stack para el área de recursos humanos de una organización en Puntarenas: expedientes del personal, procesos internos y trámites administrativos.",
     tech: ["Vite", "React", "MySQL", "TypeORM"],
   },
   {
-    role: "Frontend Developer",
-    company: "Supplement & Fitness Store Project",
+    role: "Desarrollador frontend",
+    company: "Tienda de suplementos y fitness",
     period: "2024 - 2025",
     description:
-      "Designed and developed a responsive website for a supplement and fitness store. Focused on modern UI design, responsive layouts, and creating a smooth user experience.",
+      "Diseñé y desarrollé el sitio de una tienda de suplementos y fitness: adaptable a cualquier pantalla y fácil de usar desde el primer clic.",
     tech: ["Vite", "React", "TailwindCSS", "MySQL"],
   },
   {
-    role: "Information Systems Engineering Student",
-    company: "University Studies — Costa Rica",
-    period: "2021 - Present",
+    role: "Estudiante de Ingeniería en Sistemas de Información",
+    company: "Estudios universitarios — Costa Rica",
+    period: "2021 - Actualidad",
     description:
-      "Currently studying Information Systems Engineering in Costa Rica while developing software projects and strengthening knowledge in algorithms, backend systems, and modern web technologies.",
+      "Curso la carrera mientras desarrollo proyectos propios y para clientes. Ahí reforcé algoritmos, sistemas backend y desarrollo web.",
     tech: ["C++", "C#", ".NET", "SQL Server", "HTML/CSS"],
   },
 ]
@@ -51,12 +51,12 @@ export function Experience() {
   const orbY = useTransform(smoothProgress, [0, 1], ["0%", "100%"])
 
   return (
-    <section ref={sectionRef} className="relative py-32">
+    <section ref={sectionRef} id="experience" className="relative py-32">
       <div className="mx-auto max-w-[1400px] px-6">
         <SectionHeading
           tag="// experience"
-          title="Professional Journey"
-          description="A timeline of my growth as a developer and the experience I have gathered."
+          title="Trayectoria"
+          description="Los proyectos y estudios que me han formado como desarrollador."
         />
 
         <div className="relative mx-auto max-w-3xl">

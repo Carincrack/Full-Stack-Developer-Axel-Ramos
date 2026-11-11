@@ -8,3 +8,10 @@ node_modules/
 .next/
 .env*.local
 .DS_Store
+
+# Herramientas locales de IA (skills, grafo) — no se suben
+.claude/
+.agents/
+skills-lock.json
+graphify-out/
+.taste-skill/

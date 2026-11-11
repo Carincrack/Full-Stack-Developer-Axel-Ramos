@@ -8,27 +8,27 @@ import ProfileCard from "./ProfileCard";
 const highlights = [
   {
     icon: Globe,
-    title: "Full Stack",
+    title: "Full stack",
     description:
-      "End-to-end development from responsive frontends to scalable backend services and APIs.",
+      "De la interfaz al servidor: el mismo proyecto, sin pasarlo de mano en mano.",
   },
   {
     icon: Database,
-    title: "Database Design",
+    title: "Bases de datos",
     description:
-      "Relational database architecture with PostgreSQL, MySQL, and SQL Server for data-driven applications.",
+      "Modelos relacionales en PostgreSQL, MySQL y SQL Server pensados para los datos reales del negocio.",
   },
   {
     icon: Zap,
-    title: "Performance",
+    title: "Rendimiento",
     description:
-      "Optimized builds, efficient rendering, and clean code that keeps applications fast and maintainable.",
+      "Páginas livianas y código ordenado, para que el sistema siga rápido cuando crece.",
   },
   {
     icon: Code2,
-    title: "Modern Stack",
+    title: "TypeScript",
     description:
-      "TypeScript-first development with React, Next.js, NestJS, and containerized deployments.",
+      "React, Next.js y NestJS con tipos de punta a punta y despliegues en contenedores.",
   },
 ];
 
@@ -36,7 +36,7 @@ export function About() {
   return (
     <section id="about" className="relative py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        <SectionHeading tag="// about" title="About Me" />
+        <SectionHeading tag="// about" title="Sobre mí" />
 
         {/*
           Mobile:  1 columna apilada
@@ -56,15 +56,13 @@ export function About() {
           >
             <ProfileCard
               name="Axel R.V"
-              title="Systems Engineer"
-              avatarUrl="resources/Sinfondo.png"
-              /*  avatarUrl="resources/Perfil.png"  */
+              title="Ingeniero en sistemas"
+              avatarUrl="/resources/sinfondo.webp"
               showUserInfo={false}
               enableTilt={true}
               enableMobileTilt={false}
-              behindGlowColor="rgba(125, 190, 255, 0.67)"
-              iconUrl="https://i.ibb.co/W4pfqymW/iconpattern.png"
-              behindGlowEnabled={true}
+              iconUrl="/resources/iconpattern.png"
+              behindGlowEnabled={false}
               innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
             />
           </motion.div>
@@ -79,31 +77,29 @@ export function About() {
           >
             <div className="gradient-border rounded-2xl bg-card/50 p-6 sm:p-8 md:p-10">
               <p className="mb-5 text-base sm:text-lg leading-relaxed text-muted-foreground">
-                I am a Systems Engineer and Full Stack Developer focused on
-                designing and building modern software systems, scalable
-                backends, and high-performance web applications.
+                Soy ingeniero en sistemas y desarrollador full stack. Diseño y
+                construyo sistemas web para negocios de verdad: un hotel en
+                Nicoya, una tienda de suplementos, una finca ganadera.
               </p>
 
               <p className="mb-5 leading-relaxed text-sm sm:text-base text-muted-foreground">
-                My experience covers the full development lifecycle, including
-                system architecture, database design, backend development, and
-                modern frontend interfaces using technologies like React,
-                Next.js, Node.js, and NestJS.
+                Me encargo del proyecto completo: la arquitectura, la base de
+                datos, el backend y la interfaz, con React, Next.js, Node.js y
+                NestJS.
               </p>
 
               <p className="leading-relaxed text-sm sm:text-base text-muted-foreground">
-                I focus on creating efficient, scalable, and maintainable
-                solutions, applying engineering principles, clean code
-                practices, and modern development workflows to build reliable
-                production-ready systems.
+                Me importa que lo que entrego funcione el día uno y se pueda
+                mantener después: código claro, datos bien modelados y
+                pantallas que la gente entiende sin manual.
               </p>
 
               {/* Stats */}
               <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border/50 pt-8">
                 {[
-                  { value: "24+", label: "Technologies" },
-                  { value: "3+", label: "Years Exp." },
-                  { value: "10+", label: "Projects" },
+                  { value: "24+", label: "Tecnologías" },
+                  { value: "3+", label: "Años de experiencia" },
+                  { value: "10+", label: "Proyectos" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">
                     <div className="text-xl sm:text-2xl font-bold text-foreground">

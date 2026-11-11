@@ -6,56 +6,87 @@ import { ArrowUpRight, Github, Play } from "lucide-react"
 import { SectionHeading } from "./section-heading"
 import LightRays from "./LightRays"
 import { VideoModal } from "./videomodal"
-export const projects = [
+type Project = {
+  name: string
+  description: string
+  tech: string[]
+  image: string
+  video: string
+  demo?: string
+  github?: string
+  featured?: boolean // producto estrella: 2 columnas × 2 filas en escritorio
+  wide?: boolean // 2 columnas, para que la grilla cierre pareja
+}
+
+export const projects: Project[] = [
   {
-    name: "Vivero Paraíso del Cactus",
+    name: "TuanisCan",
     description:
-      "Interactive carousel with GSAP animations, responsive design, and touch swipe support. Built to showcase a nursery's plant catalog with cinematic slide transitions.",
-    tech: ["React", "TypeScript", "GSAP", "Tailwind CSS", "Lucide React"],
-    image: "/resources/vivero.png",
-    video: "/resources/videos/video1.mp4",
-    demo: "https://viveroparaiso.vercel.app/",
-    github: undefined,
+      "Red para reportar y encontrar mascotas perdidas en Costa Rica. Cada mascota tiene su perfil, los avisos se buscan por zona y la comunidad ayuda a que vuelvan a casa.",
+    tech: ["React", "TypeScript", "Vite", "Tailwind CSS"],
+    image: "/resources/tuaniscan.webp",
+    video: "/resources/videos/tuaniscan.mp4",
+    featured: true,
+  },
+  {
+    name: "Lanakú Hotel",
+    description:
+      "Sitio y reservas para un hotel de doce habitaciones en Nicoya: habitaciones con tarifa, búsqueda por fechas e ingreso para huéspedes.",
+    tech: ["React", "TypeScript", "Vite"],
+    image: "/resources/lanaku.webp",
+    video: "/resources/videos/lanaku.mp4",
+  },
+  {
+    name: "Esteban Hernández",
+    description:
+      "Portafolio para un director audiovisual y fotógrafo de Nicoya: video a pantalla completa, sus servicios y una galería por trabajo.",
+    tech: ["Diseño web", "Frontend"],
+    image: "/resources/audiovisual.webp",
+    video: "/resources/videos/audiovisual.mp4",
   },
   {
     name: "Gym LIFTUP Suplementos",
     description:
-      "Gym system for managing supplement sales, inventory, and daily operations with admin and reception roles.",
-    tech: ["React", "TypeScript", "MySQL", "TailwindCSS", "NestJS"],
-    image: "/resources/Gym.png",
+      "Punto de venta para una tienda de suplementos con varias sedes: inventario, ventas del día y acceso por PIN para administración y recepción.",
+    tech: ["React", "TypeScript", "NestJS", "MySQL", "Tailwind CSS"],
+    image: "/resources/gym.webp",
     video: "/resources/videos/Gym.mp4",
-    github: undefined,
-    demo: undefined,
-  },
-  {
-    name: "Haori House",
-    description:
-      "High-end frontend experiences built with modern animation libraries, 3D elements, and immersive scroll-driven interactions.",
-    tech: ["JavaScript", "Css", "HTML"],
-    image: "/resources/House.png",
-    video: "/resources/videos/House.mp4",
-    demo: "https://naoristudio-house.vercel.app/",
-    github: undefined,
-  },
-  {
-    name: "Azuliverde House",
-    description:
-      "High-end frontend experiences built with modern animation libraries, 3D elements, and immersive scroll-driven interactions.",
-    tech: ["JavaScript", "Css", "HTML"],
-    image: "/resources/azuliverde.png",
-    video: "/resources/videos/azuliverde.mp4",
-    demo: "https://azuliverde.vercel.app/",
-    github: undefined,
+    wide: true,
   },
   {
     name: "Hacienda Hansen",
     description:
-      "High-end frontend experiences built with modern animation libraries, 3D elements, and immersive scroll-driven interactions.",
-    tech: ["JavaScript", "Css", "HTML"],
-    image: "/resources/Hansen.png",
-    video: "/resources/videos/hacienda.mp4",
-    demo: undefined,
-    github: undefined,
+      "Sistema de gestión ganadera para una finca: registro de los animales, control diario y acceso por PIN para quienes trabajan en ella.",
+    tech: ["React", "TypeScript"],
+    image: "/resources/hansen.webp",
+    video: "/resources/videos/Hacienda.mp4",
+  },
+  {
+    name: "Vivero Paraíso del Cactus",
+    description:
+      "Catálogo de plantas de un vivero en carrusel, con transiciones de cine hechas en GSAP y deslizamiento táctil en el celular.",
+    tech: ["React", "TypeScript", "GSAP", "Tailwind CSS"],
+    image: "/resources/vivero.webp",
+    video: "/resources/videos/video1.mp4",
+    demo: "https://viveroparaiso.vercel.app/",
+  },
+  {
+    name: "Haori House",
+    description:
+      "Landing para un desarrollo de casas modernas, con renders a pantalla completa y animaciones que acompañan el scroll.",
+    tech: ["JavaScript", "HTML", "CSS"],
+    image: "/resources/house.webp",
+    video: "/resources/videos/House.mp4",
+    demo: "https://naoristudio-house.vercel.app/",
+  },
+  {
+    name: "Azuliverde House",
+    description:
+      "Landing para una casa en medio del bosque: la arquitectura en renders y un recorrido por sus espacios al bajar por la página.",
+    tech: ["JavaScript", "HTML", "CSS"],
+    image: "/resources/azuliverde.webp",
+    video: "/resources/videos/azuliverde.mp4",
+    demo: "https://azuliverde.vercel.app/",
   },
 ]
 
@@ -126,7 +157,7 @@ function ProjectCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformPerspective: 1200 }}
-      className="group relative cursor-default select-none overflow-hidden rounded-2xl border border-border/30 bg-background/20 will-change-transform hover:border-border/70 hover:shadow-2xl hover:shadow-black/20"
+      className={`group relative cursor-default select-none overflow-hidden rounded-2xl border border-border/30 bg-background/20 will-change-transform hover:border-border/70 hover:shadow-2xl hover:shadow-black/20 ${project.featured ? "lg:col-span-2 lg:row-span-2" : project.wide ? "lg:col-span-2" : ""}`}
     >
       {/* Imagen de fondo */}
       <img
@@ -154,7 +185,7 @@ function ProjectCard({
       <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-background/90 via-background/5 to-transparent opacity-100 transition-opacity duration-400 group-hover:opacity-0" />
 
       {/* Contenido */}
-      <div className="pointer-events-none relative z-40 flex flex-col p-8" style={{ minHeight: 300 }}>
+      <div className="pointer-events-none relative z-40 flex h-full flex-col p-8" style={{ minHeight: 300 }}>
         {/* Número + botones */}
         <div className="flex items-center justify-between">
           <span className="font-mono text-xs text-muted-foreground/40">
@@ -166,16 +197,18 @@ function ProjectCard({
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Código de ${project.name} en GitHub`}
                 className="pointer-events-auto rounded-lg border border-border/40 bg-background/50 p-2 text-muted-foreground transition-all hover:border-accent/50 hover:text-foreground"
               >
                 <Github size={15} />
               </a>
             )}
-            {project.demo && project.demo !== "#" && (
+            {project.demo && (
               <a
                 href={project.demo}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Abrir el sitio de ${project.name}`}
                 className="pointer-events-auto rounded-lg border border-border/40 bg-background/50 p-2 text-muted-foreground transition-all hover:border-accent/50 hover:text-foreground"
               >
                 <ArrowUpRight size={15} />
@@ -185,12 +218,12 @@ function ProjectCard({
         </div>
 
         {/* Título */}
-        <h3 className="mt-5 text-xl font-bold text-foreground transition-all duration-300 group-hover:-translate-y-1 group-hover:opacity-0">
+        <h3 className={`mt-5 font-bold text-foreground transition-all duration-300 group-hover:-translate-y-1 group-hover:opacity-0 ${project.featured ? "text-2xl lg:text-4xl" : "text-xl"}`}>
           {project.name}
         </h3>
 
         {/* Descripción */}
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground transition-all duration-300 group-hover:translate-y-2 group-hover:opacity-0">
+        <p className={`mt-3 leading-relaxed text-muted-foreground transition-all duration-300 group-hover:translate-y-2 group-hover:opacity-0 ${project.featured ? "max-w-xl text-sm lg:text-base" : "text-sm"}`}>
           {project.description}
         </p>
 
@@ -214,7 +247,7 @@ function ProjectCard({
         {project.name}
       </h3>
 
-      {/* Play button — solo en el centro, no cubre toda la card */}
+      {/* Play button — solo en el centro; en pantallas táctiles (sin hover) queda siempre visible */}
       <motion.button
         onClick={(e) => {
           e.stopPropagation()
@@ -223,8 +256,8 @@ function ProjectCard({
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         transition={{ duration: 0.18, ease: "easeOut" }}
-        aria-label={`Ver video de ${project.name}`}
-        className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border border-white/25 bg-black/40 backdrop-blur-md shadow-[0_0_30px_rgba(255,255,255,0.08)] opacity-0 group-hover:opacity-100 transition-[opacity,border-color,box-shadow] duration-300 hover:border-white/50 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
+        aria-label={`Ver el video de ${project.name}`}
+        className="absolute left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full border border-white/25 bg-black/40 backdrop-blur-md shadow-[0_0_30px_rgba(255,255,255,0.08)] opacity-100 pointer-fine:opacity-0 pointer-fine:group-hover:opacity-100 focus-visible:opacity-100 transition-[opacity,border-color,box-shadow] duration-300 hover:border-white/50 hover:shadow-[0_0_40px_rgba(255,255,255,0.15)]"
       >
         <Play size={20} fill="white" className="ml-1 text-white drop-shadow-md" />
       </motion.button>
@@ -267,8 +300,8 @@ export function Projects() {
       <div className="relative z-10 mx-auto max-w-[1400px] px-6">
         <SectionHeading
           tag="// projects"
-          title="Featured Work"
-          description="A selection of projects that showcase my expertise in full-stack development."
+          title="Proyectos destacados"
+          description="Sistemas y sitios hechos de punta a punta, cada uno con su video de demostración."
         />
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

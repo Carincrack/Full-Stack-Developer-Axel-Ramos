@@ -44,10 +44,10 @@ const techStack: TechItem[] = [
 ]
 
 const categories = [
-  { key: "Frontend", label: "Frontend", description: "Building modern, responsive user interfaces" },
-  { key: "Backend", label: "Backend", description: "Scalable server-side architectures and APIs" },
-  { key: "Database", label: "Database", description: "Relational data modeling and optimization" },
-  { key: "DevOps", label: "DevOps & Tools", description: "CI/CD pipelines, containers, and cloud infrastructure" },
+  { key: "Frontend", label: "Frontend", description: "Interfaces que se adaptan a cualquier pantalla" },
+  { key: "Backend", label: "Backend", description: "APIs y la lógica del negocio en el servidor" },
+  { key: "Database", label: "Bases de datos", description: "Modelado relacional y consultas que rinden" },
+  { key: "DevOps", label: "DevOps y herramientas", description: "Versiones, contenedores y despliegue" },
 ]
 
 function TechIconGrid({ items }: { items: TechItem[] }) {
@@ -85,7 +85,7 @@ export function TechStack() {
       color: "oklch(0.09 0.01 250)",
       title: cat.label,
       description: cat.description,
-      label: cat.key,
+      label: cat.key === "Database" ? "Datos" : cat.key,
       children: <TechIconGrid items={items} />,
     }
   })
@@ -95,8 +95,8 @@ export function TechStack() {
       <div className="mx-auto max-w-[1400px] px-6">
         <SectionHeading
           tag="// tech stack"
-          title="Technologies I Work With"
-          description="A curated toolkit of modern technologies for building production-grade applications."
+          title="Tecnologías con las que trabajo"
+          description="Las herramientas que uso a diario para llevar un proyecto de la base de datos a producción."
         />
 
         <motion.div

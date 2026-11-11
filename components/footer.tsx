@@ -1,14 +1,7 @@
 "use client"
 
-import { Github, Linkedin, Mail, Youtube } from "lucide-react"
 import Grainient from "./Grainient"
-
-const socials = [
-  { icon: Github, href: "https://github.com", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-  { icon: Mail, href: "mailto:contact@example.com", label: "Email" },
-  { icon: Youtube, href: "https://youtube.com", label: "YouTube" },
-]
+import { socials } from "@/lib/site"
 
 export function Footer() {
   return (
@@ -48,7 +41,7 @@ export function Footer() {
       {/* Content */}
       <div className="relative z-10 mx-auto flex max-w-[1400px] flex-col items-center justify-between gap-4 px-6 sm:flex-row">
         <p className="font-mono text-xs text-muted-foreground">
-          {"Designed & built by "}
+          {"Diseñado y desarrollado por "}
           <span className="text-foreground">Axel Ramos Villegas</span>
         </p>
 

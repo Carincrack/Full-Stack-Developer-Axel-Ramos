@@ -2,9 +2,10 @@
 
 import { useRef, useCallback } from "react"
 import { motion } from "framer-motion"
-import { ArrowDown, Github, Linkedin, Mail, Youtube } from "lucide-react"
+import { ArrowDown } from "lucide-react"
 import { LaserFlow } from "./laser-flow"
 import { HeroMosaic } from "./Heromosaic"
+import { socials } from "@/lib/site"
 
 const RADIUS = 380
 
@@ -108,8 +109,8 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="mx-auto mt-6 max-w-md sm:max-w-xl text-cyan-50 text-pretty text-base sm:text-lg md:text-xl"
         >
-          Full Stack Developer building scalable systems and modern web
-          experiences.
+          Desarrollador full stack e ingeniero en sistemas en Costa Rica.
+          Hago sistemas web completos, de la base de datos a la pantalla.
         </motion.p>
 
         <motion.div
@@ -120,9 +121,9 @@ export function Hero() {
         >
           <a
             href="#projects"
-            className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-xl bg-foreground px-7 py-3.5 text-sm font-semibold text-background transition-all hover:shadow-lg hover:shadow-accent/20"
+            className="group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 overflow-hidden rounded-xl bg-foreground px-7 py-3.5 text-sm font-semibold text-background transition-[transform,box-shadow] duration-150 ease-[var(--ease-out)] hover:shadow-lg hover:shadow-accent/20 active:scale-[0.97]"
           >
-            View Projects
+            Ver proyectos
             <ArrowDown
               size={16}
               className="transition-transform group-hover:translate-y-0.5"
@@ -131,9 +132,9 @@ export function Hero() {
 
           <a
             href="#contact"
-            className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-border/60 bg-background/50 px-7 py-3.5 text-sm font-semibold text-foreground backdrop-blur-md transition-all hover:bg-background/70"
+            className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-border/60 bg-background/50 px-7 py-3.5 text-sm font-semibold text-foreground backdrop-blur-md transition-[transform,background-color] duration-150 ease-[var(--ease-out)] hover:bg-background/70 active:scale-[0.97]"
           >
-            Contact Me
+            Contactarme
           </a>
         </motion.div>
       </div>
@@ -145,12 +146,7 @@ export function Hero() {
         transition={{ duration: 0.8, delay: 1.2 }}
         className="absolute bottom-6 right-4 sm:bottom-8 sm:right-8 z-10 flex items-center gap-3"
       >
-        {[
-          { icon: Github, href: "https://github.com", label: "GitHub" },
-          { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-          { icon: Mail, href: "mailto:contact@example.com", label: "Email" },
-          { icon: Youtube, href: "https://twitter.com", label: "Twitter" },
-        ].map((social) => (
+        {socials.map((social) => (
           <a
             key={social.label}
             href={social.href}

@@ -380,54 +380,8 @@ const cardStyle = useMemo(
     onContactClick?.();
   }, [onContactClick]);
 
-  // Complex styles that require CSS variables and can't be done with Tailwind
-  const shineStyle = {
-    maskImage: 'var(--icon)',
-    maskMode: 'luminance',
-    maskRepeat: 'repeat',
-    maskSize: '150%',
-    maskPosition: 'top calc(200% - (var(--background-y) * 5)) left calc(100% - var(--background-x))',
-    filter: 'brightness(0.66) contrast(1.33) saturate(0.33) opacity(0.5)',
-    animation: 'pc-holo-bg 18s linear infinite',
-    animationPlayState: 'running' as const,
-    mixBlendMode: 'color-dodge' as const,
-    transform: 'translate3d(0, 0, 1px)',
-    overflow: 'hidden' as const,
-    zIndex: 3,
-    background: 'transparent',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundImage: `
-      repeating-linear-gradient(
-        0deg,
-        var(--sunpillar-clr-1) 5%,
-        var(--sunpillar-clr-2) 10%,
-        var(--sunpillar-clr-3) 15%,
-        var(--sunpillar-clr-4) 20%,
-        var(--sunpillar-clr-5) 25%,
-        var(--sunpillar-clr-6) 30%,
-        var(--sunpillar-clr-1) 35%
-      ),
-      repeating-linear-gradient(
-        -45deg,
-        #0e152e 0%,
-        hsl(180, 10%, 60%) 3.8%,
-        hsl(180, 29%, 66%) 4.5%,
-        hsl(180, 10%, 60%) 5.2%,
-        #0e152e 10%,
-        #0e152e 12%
-      ),
-      radial-gradient(
-        farthest-corner circle at var(--pointer-x) var(--pointer-y),
-        hsla(0, 0%, 0%, 0.1) 12%,
-        hsla(0, 0%, 0%, 0.15) 20%,
-        hsla(0, 0%, 0%, 0.25) 120%
-      )
-    `.replace(/\s+/g, ' '),
-    gridArea: '1 / -1',
-    borderRadius: cardRadius,
-    pointerEvents: 'none' as const
-  };
+  // La capa holográfica (.pc-shine y sus ::before/::after) y el destello frontal viven en app/globals.css,
+  // igual que en el CSS original de React Bits.
 
   const glareStyle: React.CSSProperties = {
     transform: 'translate3d(0, 0, 1.1px)',
@@ -439,7 +393,7 @@ const cardStyle = useMemo(
     )`,
     mixBlendMode: 'overlay',
     filter: 'brightness(0.8) contrast(1.2)',
-    zIndex: 4,
+    zIndex: 0, // tinte de la tarjeta: debajo del holograma para no apagar los iconos </>
     gridArea: '1 / -1',
     borderRadius: cardRadius,
     pointerEvents: 'none'
@@ -502,7 +456,7 @@ const cardStyle = useMemo(
             }}
           >
             {/* Shine layer */}
-            <div style={shineStyle} />
+            <div className="pc-shine" style={{ gridArea: '1 / -1', borderRadius: cardRadius }} />
 
             {/* Glare layer */}
             <div style={glareStyle} />
@@ -511,7 +465,7 @@ const cardStyle = useMemo(
             <div
               className="overflow-visible"
               style={{
-                mixBlendMode: 'luminosity',
+                zIndex: 2,
                 transform: 'translateZ(2px)',
                 gridArea: '1 / -1',
                 borderRadius: cardRadius,
@@ -587,6 +541,10 @@ const cardStyle = useMemo(
                 </div>
               )}
             </div>
+
+            {/* Destello sobre la foto: sigue al cursor */}
+            <div className="pc-front-glare" style={{ gridArea: '1 / -1', borderRadius: cardRadius }} />
+            <div className="pc-front-shade" style={{ gridArea: '1 / -1', borderRadius: cardRadius }} />
 
             {/* Details content */}
             <div

@@ -96,7 +96,10 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
     <AnimatePresence>
       {project && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10"
+          className="fixed inset-0 z-[100] flex items-center justify-center p-3 md:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Video de ${project.name}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -113,25 +116,24 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
 
           {/* Modal */}
           <motion.div
-            className="relative z-10 w-full max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a] shadow-[0_0_80px_rgba(0,0,0,0.8)]"
+            className="gradient-border relative z-10 w-full overflow-hidden rounded-2xl bg-background shadow-[0_0_80px_rgba(0,0,0,0.8),0_0_60px_-20px_oklch(0.6_0.15_250/0.35)]"
+            // Lo más grande que quepa: el video 16:9 usa toda la altura libre (≈190px son el encabezado, los controles y el margen)
+            style={{ maxWidth: "min(1600px, calc((100svh - 190px) * 16 / 9))" }}
             initial={{ scale: 0.92, opacity: 0, y: 24 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.92, opacity: 0, y: 24 }}
+            exit={{ scale: 0.96, opacity: 0, y: 12, transition: { duration: 0.18, ease: [0.23, 1, 0.32, 1] } }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-3">
-              <div className="flex items-center gap-3">
-                <div className="flex gap-1.5">
-                  <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
-                  <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
-                  <span className="h-3 w-3 rounded-full bg-[#28c840]" />
-                </div>
-                <span className="font-mono text-xs text-white/30">{project.name}</span>
+            <div className="flex items-center justify-between gap-4 border-b border-border/60 px-5 py-3.5 sm:px-6">
+              <div className="min-w-0">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-accent">Demo en video</span>
+                <h2 className="truncate text-base font-semibold text-foreground sm:text-lg">{project.name}</h2>
               </div>
               <button
                 onClick={onClose}
-                className="rounded-lg p-1.5 text-white/40 transition-colors hover:bg-white/10 hover:text-white"
+                aria-label="Cerrar video"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border/60 text-muted-foreground transition-[transform,color,border-color] duration-150 ease-[var(--ease-out)] hover:border-accent/50 hover:text-foreground active:scale-[0.95]"
               >
                 <X size={16} />
               </button>
@@ -176,14 +178,14 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
               <div
                 ref={progressBarRef}
                 onClick={handleProgressClick}
-                className="group/bar relative h-1 w-full cursor-pointer rounded-full bg-white/10 transition-all duration-150 hover:h-1.5"
+                className="group/bar relative h-1 w-full cursor-pointer rounded-full bg-white/10 transition-[height] duration-150 hover:h-1.5"
               >
                 <div
-                  className="absolute left-0 top-0 h-full rounded-full bg-white transition-all duration-100"
+                  className="absolute left-0 top-0 h-full rounded-full bg-accent shadow-[0_0_10px_oklch(0.7_0.15_250/0.6)] transition-[width] duration-100 ease-linear"
                   style={{ width: `${progress}%` }}
                 />
                 <div
-                  className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-white opacity-0 shadow-md transition-opacity group-hover/bar:opacity-100"
+                  className="absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-foreground opacity-0 shadow-md transition-opacity group-hover/bar:opacity-100"
                   style={{ left: `calc(${progress}% - 6px)` }}
                 />
               </div>
@@ -194,6 +196,7 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
                   {/* Play/Pause */}
                   <button
                     onClick={togglePlay}
+                    aria-label={isPlaying ? "Pausar" : "Reproducir"}
                     className="text-white/60 transition-colors hover:text-white"
                   >
                     {isPlaying ? (
@@ -209,6 +212,7 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
                   {/* Mute */}
                   <button
                     onClick={toggleMute}
+                    aria-label={muted ? "Activar sonido" : "Silenciar"}
                     className="text-white/60 transition-colors hover:text-white"
                   >
                     {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
@@ -230,7 +234,7 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
                       className="flex items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 font-mono text-xs text-white/60 transition-all hover:border-white/20 hover:text-white"
                     >
                       <ArrowUpRight size={12} />
-                      Live
+                      Ver sitio
                     </a>
                   )}
                   {project.github && (
@@ -241,11 +245,12 @@ export function VideoModal({ project, onClose }: VideoModalProps) {
                       className="flex items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 font-mono text-xs text-white/60 transition-all hover:border-white/20 hover:text-white"
                     >
                       <Github size={12} />
-                      Code
+                      Código
                     </a>
                   )}
                   <button
                     onClick={handleFullscreen}
+                    aria-label="Pantalla completa"
                     className="rounded-md p-1.5 text-white/40 transition-colors hover:bg-white/10 hover:text-white"
                   >
                     <Maximize2 size={14} />
